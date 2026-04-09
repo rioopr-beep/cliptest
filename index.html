@@ -3,148 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rprtx — Creative Archive</title>
-    
-    <link rel="stylesheet" href="style.css">
+    <title>rprtx — Archive</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/split-type"></script>
+
+    <style>
+        :root { --bg: #050505; --indigo: #6366f1; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* Cursor */
+        .cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 9999; mix-blend-difference: difference; }
+        .cursor-f { position: fixed; width: 24px; height: 24px; border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.1s; }
+
+        /* Menu ••• */
+        .dot-trigger { position: fixed; top: 35px; right: 45px; z-index: 1000; font-size: 24px; letter-spacing: 2px; transition: 0.3s; }
+        .dot-trigger:hover { color: var(--indigo); letter-spacing: 6px; }
+
+        .nav-overlay { position: fixed; inset: 0; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s; }
+        .nav-overlay.active { opacity: 1; pointer-events: all; }
+        .nav-link { font-size: 8vw; font-weight: 900; text-transform: uppercase; text-decoration: none; color: #fff; transition: 0.4s; }
+        .nav-link:hover { color: var(--indigo); transform: skewX(-10deg); }
+
+        /* Scroll Layout */
+        .scroll-container { display: flex; flex-wrap: nowrap; width: 500vw; height: 100vh; }
+        .panel { flex-shrink: 0; width: 100vw; height: 100vh; display: flex; align-items: center; padding: 0 8vw; border-right: 1px solid rgba(255,255,255,0.05); }
+        .panel-title { font-size: 14vw; font-weight: 900; text-transform: uppercase; white-space: nowrap; line-height: 1; letter-spacing: -0.05em; }
+        
+        .char { display: inline-block; transform: translateY(100%); opacity: 0; }
+        .outline { -webkit-text-stroke: 1px rgba(255,255,255,0.2); color: transparent; }
+    </style>
 </head>
 <body>
 
     <div class="cursor"></div>
-    <div class="cursor-follower"></div>
+    <div class="cursor-f"></div>
 
-    <button class="nav-trigger" onclick="toggleNav()">•••</button>
-
-    <nav class="overlay">
+    <div class="dot-trigger" onclick="toggleMenu()">•••</div>
+    <nav class="nav-overlay">
         <a href="about.html" class="nav-link">About</a>
     </nav>
 
-    <main class="scroll-wrapper">
-        <div class="scroll-content">
-            
-            <img src="https://picsum.photos/600/800?random=1" class="floating-photo" style="top: 15%; left: 120vw;">
-            <img src="https://picsum.photos/600/800?random=2" class="floating-photo" style="bottom: 10%; left: 240vw;">
-            <img src="https://picsum.photos/600/800?random=3" class="floating-photo" style="top: 20%; left: 360vw;">
-            <img src="https://picsum.photos/600/800?random=4" class="floating-photo" style="bottom: 15%; left: 450vw;">
-
-            <section class="panel">
-                <h1 class="panel-title text-indigo-500 animate">System Init</h1>
-            </section>
-            
-            <section class="panel bg-[#080808]">
-                <h1 class="panel-title animate">Creative Archive</h1>
-            </section>
-            
-            <section class="panel">
-                <h1 class="panel-title stroke-text animate">Future Lab</h1>
-            </section>
-            
-            <section class="panel bg-[#060606]">
-                <h1 class="panel-title animate">Visual Flow</h1>
-            </section>
-            
-            <section class="panel bg-indigo-600">
-                <h1 class="panel-title text-black animate">Stay Stoic</h1>
-            </section>
-
-        </div>
+    <main class="scroll-container">
+        <section class="panel"><h1 class="panel-title text-indigo-500 animate">System Init</h1></section>
+        <section class="panel bg-[#080808]"><h1 class="panel-title animate">Creative Archive</h1></section>
+        <section class="panel"><h1 class="panel-title outline animate">Future Lab</h1></section>
+        <section class="panel bg-[#060606]"><h1 class="panel-title animate">Visual Flow</h1></section>
+        <section class="panel bg-indigo-600"><h1 class="panel-title text-black animate">Stay Stoic</h1></section>
     </main>
 
     <script>
-        /**
-         * RPRTX MASTER ENGINE
-         * Mengelola Interaksi Global
-         */
-        
-        const toggleNav = () => document.querySelector('.overlay').classList.toggle('active');
+        const toggleMenu = () => document.querySelector('.nav-overlay').classList.toggle('active');
 
-        const Engine = {
-            init() {
-                this.setupCursor();
-                this.setupLenis();
-                this.setupScroll();
-                this.setupAnimations();
-                this.handleResize();
-            },
+        // Cursor
+        window.addEventListener("mousemove", (e) => {
+            gsap.to(".cursor", { x: e.clientX, y: e.clientY, duration: 0 });
+            gsap.to(".cursor-f", { x: e.clientX - 10, y: e.clientY - 10, duration: 0.15 });
+        });
 
-            setupCursor() {
-                const c = document.querySelector(".cursor");
-                const f = document.querySelector(".cursor-follower");
-                window.addEventListener("mousemove", (e) => {
-                    gsap.to(c, { x: e.clientX, y: e.clientY, duration: 0 });
-                    gsap.to(f, { x: e.clientX - 11, y: e.clientY - 11, duration: 0.15 });
-                });
-            },
+        // Scroll
+        gsap.registerPlugin(ScrollTrigger);
+        const panels = gsap.utils.toArray(".panel");
+        const scrollTween = gsap.to(panels, {
+            xPercent: -100 * (panels.length - 1),
+            ease: "none",
+            scrollTrigger: { trigger: ".scroll-container", pin: true, scrub: 1, end: () => "+=" + innerWidth * 5 }
+        });
 
-            setupLenis() {
-                this.lenis = new Lenis({ 
-                    duration: 1.2,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-                });
-                gsap.ticker.add((time) => this.lenis.raf(time * 1000));
-            },
+        // Text Animation
+        document.querySelectorAll(".animate").forEach(el => {
+            new SplitType(el, { types: 'chars' });
+            gsap.fromTo(el.querySelectorAll(".char"), { y: 100, opacity: 0 }, {
+                y: 0, opacity: 1, stagger: 0.04, scrollTrigger: { trigger: el, containerAnimation: scrollTween, start: "left 85%", toggleActions: "play none none reverse" }
+            });
+        });
 
-            setupScroll() {
-                gsap.registerPlugin(ScrollTrigger);
-                const content = document.querySelector(".scroll-content");
-                const panels = gsap.utils.toArray(".panel");
-                
-                this.masterTween = gsap.to(panels, {
-                    xPercent: -100 * (panels.length - 1),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: ".scroll-wrapper",
-                        pin: true,
-                        scrub: 1,
-                        end: () => "+=" + content.offsetWidth
-                    }
-                });
-            },
-
-            setupAnimations() {
-                // Entrance Text Animation
-                document.querySelectorAll(".animate").forEach(el => {
-                    const split = new SplitType(el, { types: 'chars' });
-                    gsap.fromTo(split.chars, 
-                        { y: 150, opacity: 0 }, 
-                        {
-                            y: 0, opacity: 1, stagger: 0.04, duration: 1, ease: "power4.out",
-                            scrollTrigger: {
-                                trigger: el,
-                                containerAnimation: this.masterTween,
-                                start: "left 85%",
-                                toggleActions: "play none none reverse"
-                            }
-                        }
-                    );
-                });
-
-                // Floating Photo Parallax
-                gsap.utils.toArray(".floating-photo").forEach(img => {
-                    gsap.to(img, {
-                        x: -500,
-                        rotation: 15,
-                        scrollTrigger: {
-                            trigger: img,
-                            containerAnimation: this.masterTween,
-                            scrub: 1.2
-                        }
-                    });
-                });
-            },
-
-            handleResize() {
-                window.addEventListener("resize", () => ScrollTrigger.refresh());
-            }
-        };
-
-        // Launch on Load
-        window.onload = () => Engine.init();
+        const lenis = new Lenis();
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
     </script>
 </body>
 </html>
