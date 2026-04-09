@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rprtx — Archive</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -11,77 +12,205 @@
     <script src="https://unpkg.com/split-type"></script>
 
     <style>
-        :root { --bg: #050505; --indigo: #6366f1; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        :root { 
+            --bg: #050505; 
+            --indigo: #6366f1; 
+            --text: #ffffff;
+        }
 
-        /* Menu Titik 3 */
-        .dot-menu { position: fixed; top: 30px; right: 40px; z-index: 1000; cursor: pointer; font-size: 24px; letter-spacing: 2px; color: #fff; transition: 0.3s; }
-        .dot-menu:hover { color: var(--indigo); letter-spacing: 5px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+        }
 
-        .overlay { position: fixed; inset: 0; background: rgba(5,5,5,0.95); backdrop-filter: blur(10px); z-index: 999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s; }
-        .overlay.active { opacity: 1; pointer-events: all; }
-        .nav-link { font-size: 5vw; font-weight: 900; text-transform: uppercase; text-decoration: none; color: white; }
+        /* --- 1. CUSTOM CURSOR --- */
+        .cursor { 
+            position: fixed; width: 8px; height: 8px; background: #fff; 
+            border-radius: 50%; pointer-events: none; z-index: 9999; 
+            mix-blend-difference: difference; 
+        }
+        .cursor-follower { 
+            position: fixed; width: 25px; height: 25px; border: 1px solid rgba(255,255,255,0.4); 
+            border-radius: 50%; pointer-events: none; z-index: 9998; 
+            transition: transform 0.1s ease-out; 
+        }
 
-        /* Container Lurus ke Samping */
-        .scroll-container { display: flex; flex-wrap: nowrap; width: 500vw; height: 100vh; }
-        .panel { flex-shrink: 0; width: 100vw; height: 100vh; display: flex; align-items: center; padding: 0 5vw; border-right: 1px solid rgba(255,255,255,0.05); position: relative; }
+        /* --- 2. MINIMALIST MENU (•••) --- */
+        .nav-trigger { 
+            position: fixed; top: 35px; right: 45px; z-index: 1000; 
+            font-size: 26px; font-weight: bold; letter-spacing: 2px; 
+            color: #fff; transition: 0.3s; 
+        }
+        .nav-trigger:hover { color: var(--indigo); letter-spacing: 6px; }
+
+        .overlay { 
+            position: fixed; inset: 0; background: rgba(5,5,5,0.97); 
+            backdrop-filter: blur(20px); z-index: 999; display: flex; 
+            justify-content: center; align-items: center; 
+            opacity: 0; pointer-events: none; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
+        }
+        .overlay.is-active { opacity: 1; pointer-events: all; }
+        .nav-link { 
+            font-size: clamp(3rem, 10vw, 8rem); font-weight: 900; 
+            text-transform: uppercase; text-decoration: none; color: white; 
+            transition: 0.4s; 
+        }
+        .nav-link:hover { transform: skewX(-8deg); color: var(--indigo); }
+
+        /* --- 3. HORIZONTAL ARCHITECTURE --- */
+        .scroll-wrapper { position: relative; width: 100%; overflow: hidden; }
+        .scroll-content { display: flex; flex-wrap: nowrap; width: 500vw; height: 100vh; }
+        
+        .panel { 
+            flex-shrink: 0; width: 100vw; height: 100vh; 
+            display: flex; align-items: center; padding: 0 8vw; 
+            position: relative; border-right: 1px solid rgba(255,255,255,0.05); 
+        }
         
         /* Teks Lurus Menyamping */
-        .panel__title { font-size: 12vw; font-weight: 900; text-transform: uppercase; white-space: nowrap; line-height: 1; letter-spacing: -0.05em; }
+        .panel-title { 
+            font-size: clamp(4rem, 16vw, 18rem); font-weight: 900; 
+            text-transform: uppercase; white-space: nowrap; 
+            line-height: 1; letter-spacing: -0.05em; 
+        }
 
-        /* Foto Beterbangan */
-        .floating-img { position: absolute; width: 250px; height: 350px; object-fit: cover; border-radius: 10px; pointer-events: none; z-index: 10; filter: grayscale(100%); opacity: 0.7; }
+        /* --- 4. FLOATING ASSETS --- */
+        .floating-photo { 
+            position: absolute; width: 220px; height: 320px; 
+            object-fit: cover; border-radius: 12px; 
+            filter: grayscale(100%); opacity: 0.5; z-index: 10; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+        }
 
+        /* Typography Animation Helper */
         .char { display: inline-block; transform: translateY(100%); opacity: 0; }
+        .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
     </style>
 </head>
 <body>
 
-    <div class="dot-menu" onclick="toggleMenu()">•••</div>
-    <nav class="overlay"><a href="about.html" class="nav-link">About</a></nav>
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-    <main class="scroll-container">
-        <img src="https://picsum.photos/400/600?random=1" class="floating-img" style="top: 10%; left: 120%;">
-        <img src="https://picsum.photos/400/600?random=2" class="floating-img" style="bottom: 15%; left: 250%;">
-        <img src="https://picsum.photos/400/600?random=3" class="floating-img" style="top: 20%; left: 380%;">
+    <div class="nav-trigger" onclick="toggleNav()">•••</div>
+    
+    <nav class="overlay">
+        <a href="about.html" class="nav-link">About</a>
+    </nav>
 
-        <section class="panel"><h1 class="panel__title text-indigo-500 animate">System Init</h1></section>
-        <section class="panel bg-[#080808]"><h1 class="panel__title animate">Creative Archive</h1></section>
-        <section class="panel"><h1 class="panel__title animate" style="-webkit-text-stroke: 1px white; color: transparent;">Future Lab</h1></section>
-        <section class="panel bg-[#060606]"><h1 class="panel__title animate">Visual Flow</h1></section>
-        <section class="panel bg-indigo-600"><h1 class="panel__title text-black animate">Stay Stoic</h1></section>
+    <main class="scroll-wrapper">
+        <div class="scroll-content">
+            
+            <img src="https://picsum.photos/400/600?random=10" class="floating-photo" style="top: 15%; left: 120%;">
+            <img src="https://picsum.photos/400/600?random=20" class="floating-photo" style="bottom: 10%; left: 260%;">
+            <img src="https://picsum.photos/400/600?random=30" class="floating-photo" style="top: 25%; left: 390%;">
+
+            <section class="panel">
+                <h1 class="panel-title text-indigo-500 animate">System Init</h1>
+            </section>
+            
+            <section class="panel bg-[#080808]">
+                <h1 class="panel-title animate">Creative Archive</h1>
+            </section>
+            
+            <section class="panel">
+                <h1 class="panel-title stroke-text animate">Future Lab</h1>
+            </section>
+            
+            <section class="panel bg-[#060606]">
+                <h1 class="panel-title animate">Visual Flow</h1>
+            </section>
+            
+            <section class="panel bg-indigo-600">
+                <h1 class="panel-title text-black animate">Stay Stoic</h1>
+            </section>
+
+        </div>
     </main>
 
     <script>
-        const toggleMenu = () => document.querySelector('.overlay').classList.toggle('active');
-
-        gsap.registerPlugin(ScrollTrigger);
-        const panels = gsap.utils.toArray(".panel");
+        /**
+         * RPRTX MASTER ENGINE
+         */
         
-        const scrollTween = gsap.to(panels, {
-            xPercent: -100 * (panels.length - 1),
-            ease: "none",
-            scrollTrigger: { trigger: ".scroll-container", pin: true, scrub: 1, end: () => "+=" + innerWidth * 5 }
-        });
+        const toggleNav = () => document.querySelector('.overlay').classList.toggle('is-active');
 
-        // Animasi Teks & Foto Beterbangan
-        document.querySelectorAll(".animate").forEach(el => {
-            new SplitType(el, { types: 'chars' });
-            gsap.fromTo(el.querySelectorAll(".char"), { y: 100, opacity: 0 }, {
-                y: 0, opacity: 1, stagger: 0.05, scrollTrigger: { trigger: el, containerAnimation: scrollTween, start: "left 80%", toggleActions: "play none none reverse" }
-            });
-        });
+        const Engine = {
+            init() {
+                this.setupCursor();
+                this.setupLenis();
+                this.setupScroll();
+                this.setupAnimations();
+            },
 
-        gsap.utils.toArray(".floating-img").forEach(img => {
-            gsap.to(img, {
-                y: -100, rotation: 10, scrollTrigger: { trigger: img, containerAnimation: scrollTween, scrub: 2 }
-            });
-        });
+            setupCursor() {
+                const c = document.querySelector(".cursor");
+                const f = document.querySelector(".cursor-follower");
+                window.addEventListener("mousemove", (e) => {
+                    gsap.to(c, { x: e.clientX, y: e.clientY, duration: 0 });
+                    gsap.to(f, { x: e.clientX - 8, y: e.clientY - 8, duration: 0.15 });
+                });
+            },
 
-        const lenis = new Lenis();
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-        requestAnimationFrame(raf);
+            setupLenis() {
+                this.lenis = new Lenis({ duration: 1.2 });
+                gsap.ticker.add((time) => this.lenis.raf(time * 1000));
+            },
+
+            setupScroll() {
+                gsap.registerPlugin(ScrollTrigger);
+                const panels = gsap.utils.toArray(".panel");
+                this.masterTween = gsap.to(panels, {
+                    xPercent: -100 * (panels.length - 1),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: ".scroll-wrapper",
+                        pin: true,
+                        scrub: 1,
+                        end: () => "+=" + document.querySelector(".scroll-content").offsetWidth
+                    }
+                });
+            },
+
+            setupAnimations() {
+                // 1. Text Animation
+                document.querySelectorAll(".animate").forEach(el => {
+                    new SplitType(el, { types: 'chars' });
+                    gsap.fromTo(el.querySelectorAll(".char"), 
+                        { y: 120, opacity: 0 }, 
+                        {
+                            y: 0, opacity: 1, stagger: 0.04, duration: 0.8,
+                            scrollTrigger: {
+                                trigger: el,
+                                containerAnimation: this.masterTween,
+                                start: "left 80%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+
+                // 2. Floating Photos Parallax
+                gsap.utils.toArray(".floating-photo").forEach(img => {
+                    gsap.to(img, {
+                        x: -400,
+                        y: (Math.random() - 0.5) * 200,
+                        rotation: Math.random() * 20 - 10,
+                        scrollTrigger: {
+                            trigger: img,
+                            containerAnimation: this.masterTween,
+                            scrub: 2
+                        }
+                    });
+                });
+            }
+        };
+
+        window.onload = () => Engine.init();
     </script>
 </body>
 </html>
