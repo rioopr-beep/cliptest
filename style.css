@@ -1,38 +1,35 @@
-/* * * RPRTX CORE DESIGN SYSTEM — v2.5
- * Clean, Professional, & Performance-Optimized
+/* * * RPRTX - ARCHIVE DESIGN SYSTEM 2026
+ * Professional, Clean, & High-Performance
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
 :root {
-    /* Color Palette */
     --bg: #050505;
     --accent: #6366f1;
-    --text-main: #ffffff;
+    --text: #ffffff;
     --text-dim: rgba(255, 255, 255, 0.4);
     --border: rgba(255, 255, 255, 0.08);
-    
-    /* Animation Tokens */
-    --ease-smooth: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* --- 1. Global Reset --- */
+/* --- Global Reset --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none !important; /* Mematikan kursor standar */
+    cursor: none !important;
 }
 
 body {
     background-color: var(--bg);
-    color: var(--text-main);
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    font-family: 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
-/* --- 2. Custom Cursor System --- */
+/* --- Custom Cursor System --- */
 .cursor {
     position: fixed;
     width: 8px;
@@ -41,13 +38,13 @@ body {
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    mix-blend-difference: difference; /* Efek warna invert otomatis */
+    mix-blend-difference: difference;
 }
 
 .cursor-follower {
     position: fixed;
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border: 1px solid var(--text-dim);
     border-radius: 50%;
     pointer-events: none;
@@ -55,7 +52,7 @@ body {
     will-change: transform;
 }
 
-/* --- 3. Navigation Overlay --- */
+/* --- Navigation & Overlay --- */
 .nav-trigger {
     position: fixed;
     top: 40px;
@@ -67,7 +64,7 @@ body {
     color: #fff;
     background: none;
     border: none;
-    transition: 0.3s var(--ease-smooth);
+    transition: 0.4s var(--ease);
 }
 
 .nav-trigger:hover {
@@ -87,7 +84,7 @@ body {
     align-items: center;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.6s var(--ease-smooth), visibility 0.6s;
+    transition: opacity 0.6s var(--ease), visibility 0.6s;
 }
 
 .overlay.active {
@@ -101,7 +98,7 @@ body {
     text-transform: uppercase;
     text-decoration: none;
     color: #fff;
-    transition: 0.4s var(--ease-smooth);
+    transition: 0.5s var(--ease);
 }
 
 .nav-link:hover {
@@ -109,7 +106,7 @@ body {
     color: var(--accent);
 }
 
-/* --- 4. Index: Horizontal Scroll Structure --- */
+/* --- Horizontal Layout (Index) --- */
 .scroll-wrapper {
     position: relative;
     width: 100%;
@@ -139,7 +136,6 @@ body {
     white-space: nowrap;
     letter-spacing: -0.05em;
     line-height: 1;
-    user-select: none;
 }
 
 .stroke-text {
@@ -147,7 +143,7 @@ body {
     color: transparent;
 }
 
-/* --- 5. Assets & About Page --- */
+/* --- Floating Photos --- */
 .floating-photo {
     position: absolute;
     width: 280px;
@@ -160,6 +156,7 @@ body {
     pointer-events: none;
 }
 
+/* --- About Page Specific --- */
 .about-main {
     height: 100vh;
     display: flex;
@@ -172,27 +169,27 @@ body {
     font-size: clamp(4rem, 12vw, 10rem);
     font-weight: 900;
     color: var(--accent);
-    line-height: 0.9;
+    line-height: 0.85;
 }
 
 .social-list {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin-top: 3rem;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
 }
 
 .social-item {
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
     font-weight: 700;
     text-decoration: none;
     color: var(--text-dim);
-    transition: 0.3s var(--ease-smooth);
+    transition: 0.4s var(--ease);
     width: fit-content;
 }
 
 .social-item:hover {
-    color: var(--text-main);
+    color: #fff;
     padding-left: 20px;
 }
 
@@ -201,13 +198,13 @@ body {
     top: 40px;
     right: 50px;
     z-index: 1000;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 3px;
     color: var(--text-dim);
     text-decoration: none;
     border: 1px solid var(--border);
-    padding: 10px 20px;
+    padding: 12px 24px;
     transition: 0.3s;
 }
 
@@ -216,7 +213,7 @@ body {
     color: #000;
 }
 
-/* Animation Helper */
+/* GSAP Helper */
 .char {
     display: inline-block;
     will-change: transform, opacity;
