@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rprtx — Archive</title>
+    <title>rprtx — Creative Archive</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -18,12 +18,12 @@
             --text: #ffffff;
         }
 
+        /* Base Reset */
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        
         body { 
             background-color: var(--bg); 
             color: var(--text); 
-            font-family: 'Inter', sans-serif; 
+            font-family: 'Inter', system-ui, sans-serif; 
             overflow-x: hidden; 
         }
 
@@ -39,7 +39,7 @@
             transition: transform 0.1s ease-out; 
         }
 
-        /* --- 2. MINIMALIST MENU (•••) --- */
+        /* --- 2. NAVIGATION (•••) --- */
         .nav-trigger { 
             position: fixed; top: 35px; right: 45px; z-index: 1000; 
             font-size: 26px; font-weight: bold; letter-spacing: 2px; 
@@ -48,7 +48,7 @@
         .nav-trigger:hover { color: var(--indigo); letter-spacing: 6px; }
 
         .overlay { 
-            position: fixed; inset: 0; background: rgba(5,5,5,0.97); 
+            position: fixed; inset: 0; background: rgba(5,5,5,0.98); 
             backdrop-filter: blur(20px); z-index: 999; display: flex; 
             justify-content: center; align-items: center; 
             opacity: 0; pointer-events: none; transition: 0.6s cubic-bezier(0.23, 1, 0.32, 1); 
@@ -61,9 +61,9 @@
         }
         .nav-link:hover { transform: skewX(-8deg); color: var(--indigo); }
 
-        /* --- 3. HORIZONTAL ARCHITECTURE --- */
+        /* --- 3. HORIZONTAL LAYOUT --- */
         .scroll-wrapper { position: relative; width: 100%; overflow: hidden; }
-        .scroll-content { display: flex; flex-wrap: nowrap; width: 500vw; height: 100vh; }
+        .scroll-content { display: flex; flex-wrap: nowrap; width: 500vw; height: 100vh; will-change: transform; }
         
         .panel { 
             flex-shrink: 0; width: 100vw; height: 100vh; 
@@ -76,17 +76,19 @@
             font-size: clamp(4rem, 16vw, 18rem); font-weight: 900; 
             text-transform: uppercase; white-space: nowrap; 
             line-height: 1; letter-spacing: -0.05em; 
+            position: relative; z-index: 5;
         }
 
         /* --- 4. FLOATING ASSETS --- */
         .floating-photo { 
-            position: absolute; width: 220px; height: 320px; 
+            position: absolute; width: 280px; height: 380px; 
             object-fit: cover; border-radius: 12px; 
-            filter: grayscale(100%); opacity: 0.5; z-index: 10; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            filter: grayscale(100%); opacity: 0.6; z-index: 10; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8); 
+            pointer-events: none;
         }
 
-        /* Typography Animation Helper */
+        /* Animasi Helper */
         .char { display: inline-block; transform: translateY(100%); opacity: 0; }
         .stroke-text { -webkit-text-stroke: 1px rgba(255,255,255,0.3); color: transparent; }
     </style>
@@ -97,7 +99,6 @@
     <div class="cursor-follower"></div>
 
     <div class="nav-trigger" onclick="toggleNav()">•••</div>
-    
     <nav class="overlay">
         <a href="about.html" class="nav-link">About</a>
     </nav>
@@ -105,9 +106,10 @@
     <main class="scroll-wrapper">
         <div class="scroll-content">
             
-            <img src="https://picsum.photos/400/600?random=10" class="floating-photo" style="top: 15%; left: 120%;">
-            <img src="https://picsum.photos/400/600?random=20" class="floating-photo" style="bottom: 10%; left: 260%;">
-            <img src="https://picsum.photos/400/600?random=30" class="floating-photo" style="top: 25%; left: 390%;">
+            <img src="https://picsum.photos/600/800?random=1" class="floating-photo" style="top: 10%; left: 130vw;">
+            <img src="https://picsum.photos/600/800?random=2" class="floating-photo" style="bottom: 10%; left: 260vw;">
+            <img src="https://picsum.photos/600/800?random=3" class="floating-photo" style="top: 20%; left: 380vw;">
+            <img src="https://picsum.photos/600/800?random=4" class="floating-photo" style="bottom: 15%; left: 450vw;">
 
             <section class="panel">
                 <h1 class="panel-title text-indigo-500 animate">System Init</h1>
@@ -134,7 +136,7 @@
 
     <script>
         /**
-         * RPRTX MASTER ENGINE
+         * RPRTX MASTER ENGINE v2.1
          */
         
         const toggleNav = () => document.querySelector('.overlay').classList.toggle('is-active');
@@ -145,6 +147,7 @@
                 this.setupLenis();
                 this.setupScroll();
                 this.setupAnimations();
+                this.handleResize();
             },
 
             setupCursor() {
@@ -157,13 +160,18 @@
             },
 
             setupLenis() {
-                this.lenis = new Lenis({ duration: 1.2 });
+                this.lenis = new Lenis({ 
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                });
                 gsap.ticker.add((time) => this.lenis.raf(time * 1000));
             },
 
             setupScroll() {
                 gsap.registerPlugin(ScrollTrigger);
+                const content = document.querySelector(".scroll-content");
                 const panels = gsap.utils.toArray(".panel");
+                
                 this.masterTween = gsap.to(panels, {
                     xPercent: -100 * (panels.length - 1),
                     ease: "none",
@@ -171,45 +179,52 @@
                         trigger: ".scroll-wrapper",
                         pin: true,
                         scrub: 1,
-                        end: () => "+=" + document.querySelector(".scroll-content").offsetWidth
+                        // Hitung panjang scroll berdasarkan total lebar konten
+                        end: () => "+=" + content.offsetWidth
                     }
                 });
             },
 
             setupAnimations() {
-                // 1. Text Animation
+                // 1. Animasi Teks (SplitType)
                 document.querySelectorAll(".animate").forEach(el => {
-                    new SplitType(el, { types: 'chars' });
-                    gsap.fromTo(el.querySelectorAll(".char"), 
-                        { y: 120, opacity: 0 }, 
+                    const split = new SplitType(el, { types: 'chars' });
+                    gsap.fromTo(split.chars, 
+                        { y: 150, opacity: 0 }, 
                         {
-                            y: 0, opacity: 1, stagger: 0.04, duration: 0.8,
+                            y: 0, opacity: 1, stagger: 0.04, duration: 1, ease: "power4.out",
                             scrollTrigger: {
                                 trigger: el,
                                 containerAnimation: this.masterTween,
-                                start: "left 80%",
+                                start: "left 85%",
                                 toggleActions: "play none none reverse"
                             }
                         }
                     );
                 });
 
-                // 2. Floating Photos Parallax
+                // 2. Parallax Foto Beterbangan
                 gsap.utils.toArray(".floating-photo").forEach(img => {
                     gsap.to(img, {
-                        x: -400,
-                        y: (Math.random() - 0.5) * 200,
-                        rotation: Math.random() * 20 - 10,
+                        x: -500, // Bergerak lebih cepat ke kiri untuk efek parallax
+                        y: (Math.random() - 0.5) * 300,
+                        rotation: Math.random() * 30 - 15,
+                        ease: "none",
                         scrollTrigger: {
                             trigger: img,
                             containerAnimation: this.masterTween,
-                            scrub: 2
+                            scrub: 1.5
                         }
                     });
                 });
+            },
+
+            handleResize() {
+                window.addEventListener("resize", () => ScrollTrigger.refresh());
             }
         };
 
+        // Launch Engine
         window.onload = () => Engine.init();
     </script>
 </body>
