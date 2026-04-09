@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPRTX - AutoClip Engine</title>
+    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white font-sans p-6">
+    <div class="max-w-md mx-auto">
+        <h1 class="text-xl font-mono text-indigo-400 mb-6 font-bold uppercase tracking-tighter">
+            > AutoClip_Engine.exe
+        </h1>
+        
+        <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 shadow-2xl">
+            <div id="status" class="text-xs font-mono text-zinc-500 mb-4 bg-black p-2 rounded border border-zinc-800">
+                STATUS: Menunggu inisialisasi...
+            </div>
+            
+            <label class="block text-xs uppercase text-zinc-400 mb-2 ml-1">Input Video File</label>
+            <input type="file" id="uploader" class="block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700 mb-6 cursor-pointer"/>
+
+            <button onclick="runClip()" id="btn-run" class="w-full bg-zinc-800 text-zinc-500 p-4 rounded-xl font-bold transition-all duration-300 cursor-not-allowed" disabled>
+                START CLIPPING (3s Test)
+            </button>
+        </div>
+
+        <div id="result-area" class="mt-8 hidden">
+            <p class="text-xs text-green-500 mb-2 font-mono italic">Result Ready:</p>
+            <video id="player" controls class="w-full rounded-lg border border-zinc-800 shadow-lg"></video>
+            <a id="download" class="block mt-4 text-center bg-green-600 p-3 rounded-xl font-bold text-sm">SAVE TO DEVICE</a>
+        </div>
+    </div>
+    <script src="engine.js"></script>
+</body>
+</html>
