@@ -5,43 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About — rprtx</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
     <style>
-        body { background: #050505; color: white; font-family: 'Inter', sans-serif; }
-        .nav-trigger { position: fixed; top: 30px; right: 40px; display: flex; gap: 6px; cursor: pointer; z-index: 1000; }
-        .nav-trigger span { width: 5px; height: 5px; background: white; border-radius: 50%; }
-        .nav-overlay { position: fixed; inset: 0; background: rgba(5,5,5,0.95); backdrop-filter: blur(15px); display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s; z-index: 999; }
-        .nav-overlay.is-open { opacity: 1; pointer-events: all; }
-        .nav-link { font-size: 3rem; font-weight: 900; text-transform: uppercase; margin: 10px; color: rgba(255,255,255,0.2); text-decoration: none; transition: 0.3s; }
-        .nav-link:hover { color: white; }
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
+        
+        /* Infinite Slide Loop */
+        .infinite-slider { display: flex; width: fit-content; animation: slide 20s linear infinite; }
+        @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        .slide-item { flex-shrink: 0; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
+        .falling-text { font-size: 8vw; font-weight: 900; text-transform: uppercase; line-height: 1; }
+        .char { display: inline-block; transform: translateY(-150%); opacity: 0; }
+
+        /* Foto yang jatuh & tersusun rapi */
+        .grid-photos { display: grid; grid-template-columns: repeat(3, 150px); gap: 20px; margin-top: 50px; opacity: 0; transform: translateY(50px); }
+        .grid-photos img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; filter: grayscale(100%); }
     </style>
 </head>
 <body>
 
-    <div class="nav-trigger" onclick="toggleNav()">
-        <span></span><span></span><span></span>
-    </div>
-
-    <nav class="nav-overlay">
-        <a href="index.html" class="nav-link">Index</a>
-        <a href="about.html" class="nav-link">About</a>
-        <a href="mailto:riokmxl@gmail.com" class="nav-link">Contact</a>
-    </nav>
-
-    <main class="min-h-screen flex flex-col justify-center px-10 md:px-32">
-        <h1 class="text-6xl md:text-8xl font-black mb-10 text-indigo-500">ABOUT.</h1>
-        <div class="space-y-6 max-w-2xl text-zinc-400 text-lg md:text-xl">
-            <p>Saya adalah seorang entitas kreatif yang beroperasi di bawah bendera **rprtx**. Berfokus pada pengembangan sistem digital yang presisi dan estetika minimalis.</p>
-            
-            <div class="pt-10 flex flex-col gap-4">
-                <a href="https://www.instagram.com/24yoyopr" target="_blank" class="text-white hover:text-indigo-400 transition underline">Instagram</a>
-                <a href="mailto:riokmxl@gmail.com" class="text-white hover:text-indigo-400 transition underline">riokmxl@gmail.com</a>
-                <a href="https://linkedin.com" target="_blank" class="text-white hover:text-indigo-400 transition underline">LinkedIn</a>
+    <div class="infinite-slider">
+        <div class="slide-item">
+            <h1 class="falling-text">About rprtx</h1>
+            <div class="grid-photos" id="photoGrid">
+                <img src="https://picsum.photos/400/600?random=1">
+                <img src="https://picsum.photos/400/600?random=2">
+                <img src="https://picsum.photos/400/600?random=3">
+            </div>
+            <div class="mt-10 flex gap-8">
+                <a href="https://www.instagram.com/@24yoyopr" class="underline">Instagram</a>
+                <a href="mailto:riokmxl@gmail.com" class="underline">Email</a>
+                <a href="https://linkedin.com" class="underline">LinkedIn</a>
             </div>
         </div>
-    </main>
+        <div class="slide-item">
+            <h1 class="falling-text">About rprtx</h1>
+            <div class="grid-photos">
+                <img src="https://picsum.photos/400/600?random=1">
+                <img src="https://picsum.photos/400/600?random=2">
+                <img src="https://picsum.photos/400/600?random=3">
+            </div>
+        </div>
+    </div>
 
     <script>
-        const toggleNav = () => document.querySelector('.nav-overlay').classList.toggle('is-open');
+        // Animasi Teks Jatuh
+        const text = new SplitType('.falling-text', { types: 'chars' });
+        gsap.to(text.chars, {
+            y: 0, opacity: 1, stagger: 0.1, duration: 1.5, ease: "bounce.out"
+        });
+
+        // Animasi Grid Foto Tersusun (Smooth)
+        gsap.to("#photoGrid", {
+            opacity: 1, y: 0, duration: 1, delay: 1, ease: "power4.out"
+        });
     </script>
 </body>
 </html>
