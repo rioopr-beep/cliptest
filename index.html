@@ -3,44 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPRTX - AutoClip Engine</title>
-    <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
+    <title>rprtx — Digital Archive</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --accent-indigo: #6366f1;
+            --panel-border: rgba(255, 255, 255, 0.05);
+            --text-main: #ffffff;
+            --font-mono: 'Fira Code', monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Lenis Required CSS */
+        html.lenis { height: auto; }
+        .lenis-smooth { scroll-behavior: auto !important; }
+
+        /* Scroller Layout */
+        #main-scroller {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .horizontal-wrapper {
+            display: flex;
+            width: 400vw; /* Total panels * 100vw */
+            height: 100vh;
+            will-change: transform;
+        }
+
+        .panel {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 7%;
+            border-right: 1px solid var(--panel-border);
+        }
+
+        .panel-heading {
+            font-size: clamp(3.5rem, 15vw, 18rem);
+            font-weight: 800;
+            line-height: 0.8;
+            letter-spacing: -0.06em;
+            text-transform: uppercase;
+        }
+
+        .panel-meta {
+            position: absolute;
+            top: 4rem;
+            left: 7%;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        /* Utility: Stroke Text */
+        .text-stroke {
+            -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            color: transparent;
+        }
+    </style>
 </head>
-<body class="bg-black text-white font-sans p-6">
-    <div class="max-w-md mx-auto">
-        <h1 class="text-xl font-mono text-indigo-400 mb-6 font-bold uppercase tracking-tighter">
-            > AutoClip_Engine.exe
-        </h1>
-        
-        <div class="bg-zinc-900 p-5 rounded-2xl border border-zinc-800 shadow-2xl">
-            <div id="status" class="text-xs font-mono text-zinc-500 mb-4 bg-black p-2 rounded border border-zinc-800">
-                STATUS: Menunggu inisialisasi...
-            </div>
+<body>
+
+    <main id="main-scroller">
+        <div class="horizontal-wrapper">
             
-            <label class="block text-xs uppercase text-zinc-400 mb-2 ml-1">Paste Link Video (.mp4)</label>
-            <input type="text" id="link-input" placeholder="https://example.com/video.mp4" class="w-full p-3 bg-black border border-zinc-800 rounded-xl mb-4 text-sm text-indigo-300 focus:outline-none focus:border-indigo-500">
+            <section class="panel">
+                <span class="panel-meta">01 / initialization</span>
+                <h2 class="panel-heading text-indigo-600">Digital<br>System</h2>
+            </section>
 
-            <div class="relative flex py-3 items-center">
-                <div class="flex-grow border-t border-zinc-800"></div>
-                <span class="flex-shrink mx-4 text-zinc-600 text-[10px] uppercase">Atau</span>
-                <div class="flex-grow border-t border-zinc-800"></div>
-            </div>
+            <section class="panel bg-[#070707]">
+                <span class="panel-meta">02 / architecture</span>
+                <h2 class="panel-heading">Kinetic<br>Motion</h2>
+            </section>
 
-            <label class="block text-xs uppercase text-zinc-400 mb-2 ml-1">Upload File Lokal</label>
-            <input type="file" id="uploader" class="block w-full text-sm text-zinc-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zinc-800 file:text-zinc-300 hover:file:bg-zinc-700 mb-6 cursor-pointer"/>
+            <section class="panel">
+                <span class="panel-meta">03 / workflow</span>
+                <h2 class="panel-heading text-stroke">Smooth<br>Experience</h2>
+            </section>
 
-            <button onclick="runClip()" id="btn-run" class="w-full bg-zinc-800 text-zinc-500 p-4 rounded-xl font-bold transition-all duration-300 cursor-not-allowed" disabled>
-                START CLIPPING (3s Test)
-            </button>
+            <section class="panel bg-[#6366f1]">
+                <span class="panel-meta" style="color: rgba(0,0,0,0.4)">04 / conclusion</span>
+                <h2 class="panel-heading text-black">Stay<br>Disciplined</h2>
+            </section>
+
         </div>
+    </main>
 
-        <div id="result-area" class="mt-8 hidden">
-            <p class="text-xs text-green-500 mb-2 font-mono italic">Result Ready:</p>
-            <video id="player" controls class="w-full rounded-lg border border-zinc-800 shadow-lg"></video>
-            <a id="download" class="hidden mt-4 text-center bg-green-600 p-3 rounded-xl font-bold text-sm text-white">SAVE TO DEVICE</a>
-        </div>
-    </div>
-    <script src="engine.js"></script>
+    <script>
+        /**
+         * RPRTX Core Engine Refactored
+         */
+        
+        const Engine = {
+            init() {
+                this.initLenis();
+                this.initHorizontalScroll();
+                this.handleResize();
+            },
+
+            initLenis() {
+                this.lenis = new Lenis({
+                    duration: 1.4,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smoothWheel: true
+                });
+
+                // Sync Lenis with GSAP Ticker
+                this.lenis.on('scroll', ScrollTrigger.update);
+                gsap.ticker.add((time) => {
+                    this.lenis.raf(time * 1000);
+                });
+                gsap.ticker.lagSmoothing(0);
+            },
+
+            initHorizontalScroll() {
+                gsap.registerPlugin(ScrollTrigger);
+                
+                const wrapper = document.querySelector(".horizontal-wrapper");
+                const panels = gsap.utils.toArray(".panel");
+
+                gsap.to(panels, {
+                    xPercent: -100 * (panels.length - 1),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "#main-scroller",
+                        pin: true,
+                        scrub: 1, // Smoothness level
+                        snap: 1 / (panels.length - 1),
+                        start: "top top",
+                        // Dynamic end calculation
+                        end: () => `+=${wrapper.offsetWidth}`,
+                        invalidateOnRefresh: true
+                    }
+                });
+            },
+
+            handleResize() {
+                window.addEventListener("resize", () => {
+                    ScrollTrigger.refresh();
+                });
+            }
+        };
+
+        // Boot system
+        document.addEventListener("DOMContentLoaded", () => Engine.init());
+    </script>
 </body>
 </html>
