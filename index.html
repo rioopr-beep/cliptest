@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rprtx — Digital Archive</title>
+    <title>rprtx — Creative Archive</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -13,222 +13,166 @@
 
     <style>
         :root {
-            --bg-dark: #050505;
-            --accent-indigo: #6366f1;
-            --panel-border: rgba(255, 255, 255, 0.05);
-            --text-main: #ffffff;
-            --font-mono: 'Fira Code', monospace;
+            --bg: #050505;
+            --primary: #6366f1;
+            --text: #ffffff;
+            --font-main: 'Inter', system-ui, sans-serif;
+            --transition-smooth: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        /* 1. RESET & BASE */
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-font-smoothing: antialiased; 
-            -moz-osx-font-smoothing: grayscale;
+        /* --- Base Setup --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: var(--font-main); 
+            overflow-x: hidden; 
+            cursor: none; 
         }
 
-        html.lenis { height: auto; }
-        .lenis-smooth { scroll-behavior: auto !important; }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            overflow-x: hidden;
-            /* Sembunyikan kursor asli jika menggunakan perangkat dengan mouse */
-            cursor: none;
-        }
-
-        /* 2. CURSOR FOLLOWER */
-        .cursor-follower {
-            position: fixed;
-            width: 20px;
-            height: 20px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
+        /* --- Custom Cursor --- */
+        .cursor {
+            position: fixed; width: 12px; height: 12px;
+            background: var(--text); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
             mix-blend-difference: difference;
-            will-change: transform, width, height;
-            display: none; /* Disembunyikan dulu, akan muncul lewat JS jika ada mouse */
+            will-change: transform; transition: width 0.3s, height 0.3s, background 0.3s;
         }
+        .cursor--expand { width: 65px; height: 65px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
 
-        @media (pointer: fine) {
-            .cursor-follower { display: block; }
+        /* --- Minimalist Menu Trigger --- */
+        .nav-trigger {
+            position: fixed; top: 30px; right: 40px;
+            z-index: 1000; display: flex; gap: 6px;
+            padding: 15px; transition: var(--transition-smooth);
         }
+        .nav-trigger span { width: 4px; height: 4px; background: var(--text); border-radius: 50%; }
+        .nav-trigger:hover { transform: scale(1.2); }
 
-        .cursor-follower.active {
-            width: 80px;
-            height: 80px;
-            background-color: rgba(255, 255, 255, 1);
-            border: none;
+        /* --- Glassmorphism Menu Overlay --- */
+        .nav-overlay {
+            position: fixed; inset: 0; width: 100%; height: 100vh;
+            background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(15px);
+            z-index: 999; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: var(--transition-smooth);
         }
-
-        /* 3. LAYOUT ARCHITECTURE */
-        #main-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
+        .nav-overlay.is-open { opacity: 1; pointer-events: all; }
+        
+        .nav-link {
+            font-size: clamp(2rem, 6vw, 5rem); font-weight: 900;
+            text-decoration: none; color: rgba(255,255,255,0.2);
+            text-transform: uppercase; margin: 10px 0;
+            transition: var(--transition-smooth);
         }
+        .nav-link:hover { color: var(--text); transform: skewX(-5deg); }
 
-        .horizontal-container {
-            display: flex;
-            width: 400vw;
-            height: 100vh;
-            will-change: transform;
-        }
-
+        /* --- Horizontal Architecture --- */
+        .scroll-wrapper { position: relative; width: 100%; overflow: hidden; }
+        .scroll-container { display: flex; width: 500vw; height: 100vh; }
+        
         .panel {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 0 8vw;
-            border-right: 1px solid var(--panel-border);
+            position: relative; width: 100vw; height: 100vh;
+            display: flex; align-items: center; padding: 0 10%;
+            border-right: 1px solid rgba(255,255,255,0.03);
+        }
+        .panel__title {
+            font-size: clamp(3.5rem, 15vw, 18rem);
+            font-weight: 900; line-height: 0.8;
+            letter-spacing: -0.05em; text-transform: uppercase;
         }
 
-        .panel-title {
-            font-size: clamp(3rem, 12vw, 15rem);
-            font-weight: 900;
-            line-height: 0.85;
-            text-transform: uppercase;
-            letter-spacing: -0.05em;
-        }
-
-        .panel-number {
-            position: absolute;
-            top: 10%;
-            left: 8vw;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
-            color: #444;
-            text-transform: uppercase;
-        }
-
-        /* 4. TYPOGRAPHY ENGINE STYLES */
-        .char {
-            display: inline-block;
-            transform: translateY(100%);
-            opacity: 0;
-            will-change: transform, opacity;
-        }
-
-        .text-stroke {
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
-            color: transparent;
-        }
-
-        ::selection { background: var(--accent-indigo); color: white; }
+        /* --- Typography Helpers --- */
+        .char { display: inline-block; transform: translateY(100%); opacity: 0; }
+        .stroke { -webkit-text-stroke: 1px rgba(255,255,255,0.2); color: transparent; }
     </style>
 </head>
 <body>
 
-    <div class="cursor-follower"></div>
+    <div class="cursor"></div>
 
-    <main id="main-wrapper">
-        <div class="horizontal-container">
+    <div class="nav-trigger" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+    </div>
+
+    <nav class="nav-overlay">
+        <a href="/" class="nav-link">Index</a>
+        <a href="/about" class="nav-link">About</a>
+        <a href="/project" class="nav-link">Archive</a>
+        <a href="mailto:rio@example.com" class="nav-link">Contact</a>
+    </nav>
+
+    <main class="scroll-wrapper">
+        <div class="scroll-container">
+            <section class="panel">
+                <h1 class="panel__title text-indigo-500 animate">System<br>Init</h1>
+            </section>
+            
+            <section class="panel bg-[#080808]">
+                <h1 class="panel__title animate">About<br>RPRTX</h1>
+            </section>
             
             <section class="panel">
-                <span class="panel-number">01 // INIT</span>
-                <h1 class="panel-title text-indigo-500 animate-text">System<br>Init</h1>
+                <h1 class="panel__title stroke animate">Future<br>Work</h1>
             </section>
-
-            <section class="panel bg-[#080808]">
-                <span class="panel-number">02 // ARCH</span>
-                <h1 class="panel-title animate-text">Core<br>Engine</h1>
+            
+            <section class="panel bg-[#060606]">
+                <h1 class="panel__title animate">Visual<br>Flow</h1>
             </section>
-
-            <section class="panel">
-                <span class="panel-number">03 // FLOW</span>
-                <h1 class="panel-title text-stroke animate-text">Smooth<br>Motion</h1>
+            
+            <section class="panel bg-indigo-600">
+                <h1 class="panel__title text-black animate">Stay<br>Stoic</h1>
             </section>
-
-            <section class="panel bg-[#6366f1]">
-                <span class="panel-number" style="color: rgba(0,0,0,0.4)">04 // END</span>
-                <h1 class="panel-title text-black animate-text">Stay<br>Stoic</h1>
-            </section>
-
         </div>
     </main>
 
     <script>
         /**
-         * RPRTX - INTEGRATED MASTER ENGINE
+         * RPRTX ENGINE - V1.7
          */
         
-        const RPRTX_Engine = {
+        const toggleNav = () => document.querySelector('.nav-overlay').classList.toggle('is-open');
+
+        const Engine = {
             init() {
-                this.initLenis();
-                this.initScrollArchitecture();
-                this.initTypography();
-                this.initInteractions();
-                this.handleResize();
-                
-                console.log("System Status: v1.4 - All Modules Online.");
+                this.setupLenis();
+                this.setupScroll();
+                this.setupType();
+                this.setupCursor();
+                this.refresh();
             },
 
-            // --- MODULE: SMOOTH SCROLL ---
-            initLenis() {
-                this.lenis = new Lenis({
-                    duration: 1.5,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                    smoothWheel: true,
-                });
-
-                this.lenis.on('scroll', ScrollTrigger.update);
-                gsap.ticker.add((time) => {
-                    this.lenis.raf(time * 1000);
-                });
-                gsap.ticker.lagSmoothing(0);
+            setupLenis() {
+                this.lenis = new Lenis({ duration: 1.4, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+                gsap.ticker.add((time) => this.lenis.raf(time * 1000));
             },
 
-            // --- MODULE: HORIZONTAL ARCHITECTURE ---
-            initScrollArchitecture() {
+            setupScroll() {
                 gsap.registerPlugin(ScrollTrigger);
-
-                const container = document.querySelector(".horizontal-container");
-                const sections = gsap.utils.toArray(".panel");
-
-                this.horizontalTween = gsap.to(sections, {
-                    xPercent: -100 * (sections.length - 1),
+                const panels = gsap.utils.toArray(".panel");
+                this.masterTween = gsap.to(panels, {
+                    xPercent: -100 * (panels.length - 1),
                     ease: "none",
                     scrollTrigger: {
-                        trigger: "#main-wrapper",
+                        trigger: ".scroll-wrapper",
                         pin: true,
                         scrub: 1,
-                        snap: 1 / (sections.length - 1),
-                        start: "top top",
-                        end: () => "+=" + container.offsetWidth,
-                        invalidateOnRefresh: true
+                        end: () => "+=" + document.querySelector(".scroll-container").offsetWidth
                     }
                 });
             },
 
-            // --- MODULE: TYPOGRAPHY ANIMATION ---
-            initTypography() {
-                const textTargets = document.querySelectorAll(".animate-text");
-
-                textTargets.forEach((target) => {
-                    const split = new SplitType(target, { types: 'chars' });
-
+            setupType() {
+                document.querySelectorAll(".animate").forEach(el => {
+                    const split = new SplitType(el, { types: 'chars' });
                     gsap.fromTo(split.chars, 
-                        { y: 100, opacity: 0 }, 
+                        { y: 70, opacity: 0 }, 
                         {
-                            y: 0,
-                            opacity: 1,
-                            stagger: 0.05,
-                            duration: 1.2,
-                            ease: "power4.out",
+                            y: 0, opacity: 1, stagger: 0.03, duration: 1,
                             scrollTrigger: {
-                                trigger: target,
-                                containerAnimation: this.horizontalTween,
+                                trigger: el,
+                                containerAnimation: this.masterTween,
                                 start: "left 85%",
                                 toggleActions: "play none none reverse"
                             }
@@ -237,35 +181,30 @@
                 });
             },
 
-            // --- MODULE: MICRO-INTERACTIONS ---
-            initInteractions() {
-                const follower = document.querySelector(".cursor-follower");
-                if (!follower) return;
+            setupCursor() {
+                const cursor = document.querySelector(".cursor");
+                const xSet = gsap.quickSetter(cursor, "x", "px");
+                const ySet = gsap.quickSetter(cursor, "y", "px");
 
-                const xSetter = gsap.quickSetter(follower, "x", "px");
-                const ySetter = gsap.quickSetter(follower, "y", "px");
-
-                window.addEventListener("mousemove", (e) => {
-                    xSetter(e.clientX);
-                    ySetter(e.clientY);
+                window.addEventListener("mousemove", e => {
+                    xSet(e.clientX);
+                    ySet(e.clientY);
                 });
 
-                const interactiveElements = document.querySelectorAll(".animate-text, .panel-number, .panel-title");
-                
-                interactiveElements.forEach(el => {
-                    el.addEventListener("mouseenter", () => follower.classList.add("active"));
-                    el.addEventListener("mouseleave", () => follower.classList.remove("active"));
+                // Interaction Logic
+                const targets = ".nav-link, .nav-trigger, .animate, .stroke";
+                document.querySelectorAll(targets).forEach(el => {
+                    el.addEventListener("mouseenter", () => cursor.classList.add("cursor--expand"));
+                    el.addEventListener("mouseleave", () => cursor.classList.remove("cursor--expand"));
                 });
             },
 
-            handleResize() {
-                window.addEventListener("resize", () => {
-                    ScrollTrigger.refresh();
-                });
+            refresh() {
+                window.addEventListener("resize", () => ScrollTrigger.refresh());
             }
         };
 
-        document.addEventListener("DOMContentLoaded", () => RPRTX_Engine.init());
+        window.onload = () => Engine.init();
     </script>
 </body>
 </html>
