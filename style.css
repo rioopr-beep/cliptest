@@ -1,40 +1,35 @@
-/* * RPRTX - CORE DESIGN SYSTEM 2026
- * Professional Portfolio Framework
+/* * * RPRTX CORE DESIGN SYSTEM — v2.5
+ * Clean, Professional, & Performance-Optimized
  */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
 :root {
-    /* Color Tokens */
-    --bg-dark: #050505;
+    /* Color Palette */
+    --bg: #050505;
     --accent: #6366f1;
     --text-main: #ffffff;
     --text-dim: rgba(255, 255, 255, 0.4);
-    --border-line: rgba(255, 255, 255, 0.08);
+    --border: rgba(255, 255, 255, 0.08);
     
     /* Animation Tokens */
-    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
     --ease-smooth: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* --- 1. Reset & Global --- */
+/* --- 1. Global Reset --- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none !important;
+    cursor: none !important; /* Mematikan kursor standar */
 }
 
-html.lenis { height: auto; }
-
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--bg);
     color: var(--text-main);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    line-height: 1.2;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 /* --- 2. Custom Cursor System --- */
@@ -46,49 +41,46 @@ body {
     border-radius: 50%;
     pointer-events: none;
     z-index: 10000;
-    mix-blend-difference: difference;
-    backface-visibility: hidden;
+    mix-blend-difference: difference; /* Efek warna invert otomatis */
 }
 
-.cursor-f {
+.cursor-follower {
     position: fixed;
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     border: 1px solid var(--text-dim);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
     will-change: transform;
-    transition: transform 0.2s var(--ease-out-expo), opacity 0.3s ease;
 }
 
-/* --- 3. Minimalist Navigation --- */
+/* --- 3. Navigation Overlay --- */
 .nav-trigger {
     position: fixed;
     top: 40px;
     right: 50px;
     z-index: 2000;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 700;
     letter-spacing: 2px;
-    color: var(--text-main);
+    color: #fff;
     background: none;
     border: none;
-    transition: var(--ease-smooth);
+    transition: 0.3s var(--ease-smooth);
 }
 
 .nav-trigger:hover {
     color: var(--accent);
     letter-spacing: 6px;
-    transform: translateX(-5px);
 }
 
-.nav-overlay {
+.overlay {
     position: fixed;
     inset: 0;
     background: rgba(5, 5, 5, 0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     z-index: 1500;
     display: flex;
     justify-content: center;
@@ -98,7 +90,7 @@ body {
     transition: opacity 0.6s var(--ease-smooth), visibility 0.6s;
 }
 
-.nav-overlay.active {
+.overlay.active {
     opacity: 1;
     visibility: visible;
 }
@@ -108,17 +100,22 @@ body {
     font-weight: 900;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--text-main);
-    transition: transform 0.5s var(--ease-smooth), color 0.3s;
+    color: #fff;
+    transition: 0.4s var(--ease-smooth);
 }
 
 .nav-link:hover {
+    transform: skewX(-8deg) scale(1.05);
     color: var(--accent);
-    transform: skewX(-8deg) scale(1.02);
 }
 
-/* --- 4. Horizontal Scroll (Index) --- */
-.scroll-container {
+/* --- 4. Index: Horizontal Scroll Structure --- */
+.scroll-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.scroll-content {
     display: flex;
     width: 500vw;
     height: 100vh;
@@ -132,7 +129,7 @@ body {
     display: flex;
     align-items: center;
     padding: 0 8vw;
-    border-right: 1px solid var(--border-line);
+    border-right: 1px solid var(--border);
 }
 
 .panel-title {
@@ -141,12 +138,30 @@ body {
     text-transform: uppercase;
     white-space: nowrap;
     letter-spacing: -0.05em;
+    line-height: 1;
     user-select: none;
 }
 
-/* --- 5. About Page Structure --- */
+.stroke-text {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
+    color: transparent;
+}
+
+/* --- 5. Assets & About Page --- */
+.floating-photo {
+    position: absolute;
+    width: 280px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: grayscale(100%);
+    opacity: 0.5;
+    z-index: 10;
+    pointer-events: none;
+}
+
 .about-main {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -154,28 +169,26 @@ body {
 }
 
 .falling-title {
-    font-size: clamp(3.5rem, 11vw, 10rem);
+    font-size: clamp(4rem, 12vw, 10rem);
     font-weight: 900;
-    line-height: 0.9;
     color: var(--accent);
-    margin-bottom: 2rem;
+    line-height: 0.9;
 }
 
 .social-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 15px;
     margin-top: 3rem;
 }
 
 .social-item {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-size: 2rem;
     font-weight: 700;
     text-decoration: none;
     color: var(--text-dim);
-    transition: 0.4s var(--ease-smooth);
+    transition: 0.3s var(--ease-smooth);
     width: fit-content;
-    position: relative;
 }
 
 .social-item:hover {
@@ -183,11 +196,28 @@ body {
     padding-left: 20px;
 }
 
-/* --- 6. Interaction Helpers --- */
-.outline-text {
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
-    color: transparent;
+.close-btn {
+    position: fixed;
+    top: 40px;
+    right: 50px;
+    z-index: 1000;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 10px 20px;
+    transition: 0.3s;
 }
 
-.char {
+.close-btn:hover {
+    background: #fff;
+    color: #000;
+}
 
+/* Animation Helper */
+.char {
+    display: inline-block;
+    will-change: transform, opacity;
+}
