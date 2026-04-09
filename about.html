@@ -4,63 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About — rprtx</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
+
     <style>
-        body { background: #050505; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
-        
-        /* Infinite Slide Loop */
-        .infinite-slider { display: flex; width: fit-content; animation: slide 20s linear infinite; }
-        @keyframes slide { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        :root { 
+            --bg: #050505; 
+            --indigo: #6366f1; 
+        }
 
-        .slide-item { flex-shrink: 0; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
         
-        .falling-text { font-size: 8vw; font-weight: 900; text-transform: uppercase; line-height: 1; }
-        .char { display: inline-block; transform: translateY(-150%); opacity: 0; }
+        body { 
+            background-color: var(--bg); 
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            overflow: hidden; 
+        }
 
-        /* Foto yang jatuh & tersusun rapi */
-        .grid-photos { display: grid; grid-template-columns: repeat(3, 150px); gap: 20px; margin-top: 50px; opacity: 0; transform: translateY(50px); }
-        .grid-photos img { width: 100%; height: 200px; object-fit: cover; border-radius: 5px; filter: grayscale(100%); }
+        /* Custom Cursor */
+        .cursor { 
+            position: fixed; width: 8px; height: 8px; background: #fff; 
+            border-radius: 50%; pointer-events: none; z-index: 9999; 
+            mix-blend-difference: difference; 
+        }
+
+        /* Layout */
+        main {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 10%;
+        }
+
+        .title {
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            color: var(--indigo);
+            margin-bottom: 2rem;
+        }
+
+        .description {
+            max-width: 600px;
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            margin-bottom: 3rem;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .social-links a {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: 0.3s;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            width: fit-content;
+            padding-bottom: 5px;
+        }
+
+        .social-links a:hover {
+            color: var(--indigo);
+            border-bottom: 1px solid var(--indigo);
+            padding-left: 10px;
+        }
+
+        .back-btn {
+            position: fixed; top: 35px; right: 45px;
+            text-decoration: none; color: white;
+            font-size: 14px; text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: black;
+        }
     </style>
 </head>
 <body>
 
-    <div class="infinite-slider">
-        <div class="slide-item">
-            <h1 class="falling-text">About rprtx</h1>
-            <div class="grid-photos" id="photoGrid">
-                <img src="https://picsum.photos/400/600?random=1">
-                <img src="https://picsum.photos/400/600?random=2">
-                <img src="https://picsum.photos/400/600?random=3">
-            </div>
-            <div class="mt-10 flex gap-8">
-                <a href="https://www.instagram.com/@24yoyopr" class="underline">Instagram</a>
-                <a href="mailto:riokmxl@gmail.com" class="underline">Email</a>
-                <a href="https://linkedin.com" class="underline">LinkedIn</a>
-            </div>
+    <div class="cursor"></div>
+
+    <a href="index.html" class="back-btn">Back •</a>
+
+    <main>
+        <h1 class="title">ABOUT.</h1>
+        
+        <p class="description">
+            Seorang praktisi digital yang fokus pada pengembangan sistem kreatif dan estetika minimalis. Menggabungkan kode presisi dengan filosofi ketenangan dalam setiap karya.
+        </p>
+
+        <div class="social-links">
+            <a href="https://www.instagram.com/@24yoyopr" target="_blank">Instagram</a>
+            <a href="mailto:riokmxl@gmail.com">Email</a>
+            <a href="https://linkedin.com" target="_blank">LinkedIn</a>
         </div>
-        <div class="slide-item">
-            <h1 class="falling-text">About rprtx</h1>
-            <div class="grid-photos">
-                <img src="https://picsum.photos/400/600?random=1">
-                <img src="https://picsum.photos/400/600?random=2">
-                <img src="https://picsum.photos/400/600?random=3">
-            </div>
-        </div>
-    </div>
+    </main>
 
     <script>
-        // Animasi Teks Jatuh
-        const text = new SplitType('.falling-text', { types: 'chars' });
-        gsap.to(text.chars, {
-            y: 0, opacity: 1, stagger: 0.1, duration: 1.5, ease: "bounce.out"
+        // Simple Cursor Logic
+        const c = document.querySelector(".cursor");
+        window.addEventListener("mousemove", (e) => {
+            gsap.to(c, { x: e.clientX, y: e.clientY, duration: 0 });
         });
 
-        // Animasi Grid Foto Tersusun (Smooth)
-        gsap.to("#photoGrid", {
-            opacity: 1, y: 0, duration: 1, delay: 1, ease: "power4.out"
-        });
+        // Basic Entry Animation
+        window.onload = () => {
+            gsap.from(".title", { opacity: 0, y: 50, duration: 1, ease: "power4.out" });
+            gsap.from(".description", { opacity: 0, y: 30, duration: 1, delay: 0.3, ease: "power4.out" });
+            gsap.from(".social-links a", { opacity: 0, x: -30, stagger: 0.1, duration: 0.8, delay: 0.6, ease: "power4.out" });
+        }
     </script>
 </body>
 </html>
