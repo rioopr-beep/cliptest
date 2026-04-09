@@ -20,28 +20,58 @@ async function init() {
 }
 
 async function runClip() {
-    const file = document.getElementById('uploader').files[0];
-    if (!file) return alert("Pilih video dulu!");
-
-    document.getElementById('status').innerText = "STATUS: PROCESSING_CLIP...";
+    const fileInput = document.getElementById('uploader').files[0];
+    const linkInput = document.getElementById('link-input').value;
+    const statusEl = document.getElementById('status');
     
-    // Tulis file ke memori virtual browser
-    ffmpeg.FS('writeFile', 'input.mp4', await fetchFile(file));
+    if (!fileInput && !linkInput) return alert("Pilih file atau masukkan link video!");
 
-    // Jalankan perintah potong (mengambil 3 detik pertama)
-    // -c copy memastikan proses secepat kilat (tanpa render ulang)
-    await ffmpeg.run('-i', 'input.mp4', '-t', '3', '-c', 'copy', 'output.mp4');
+    statusEl.innerText = "STATUS: FETCHING_DATA...";
+    statusEl.classList.replace('text-green-500', 'text-yellow-500');
 
-    // Ambil data hasil potong
-    const data = ffmpeg.FS('readFile', 'output.mp4');
-    const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+    try {
+        let videoData;
+        if (fileInput) {
+            // Proses file lokal
+            videoData = await fetchFile(fileInput);
+        } else {
+            // Proses dari link (Remote Fetch)
+            videoData = await fetchFile(linkInput);
+        }
 
-    // Tampilkan hasil
-    document.getElementById('player').src = url;
-    document.getElementById('download').href = url;
-    document.getElementById('download').download = "rprtx_clip.mp4";
-    document.getElementById('result-area').classList.remove('hidden');
-    document.getElementById('status').innerText = "STATUS: CLIP_COMPLETED";
+        statusEl.innerText = "STATUS: PROCESSING_CLIP...";
+        
+        // Tulis file ke memori virtual FFmpeg
+        ffmpeg.FS('writeFile', 'input.mp4', videoData);
+
+        // Perintah potong: ambil 3 detik pertama
+        // Kita gunakan -c copy agar proses secepat kilat (Hanya bekerja jika formatnya sama)
+        await ffmpeg.run('-i', 'input.mp4', '-t', '3', '-c', 'copy', 'output.mp4');
+
+        // Baca hasil
+        const data = ffmpeg.FS('readFile', 'output.mp4');
+        const url = URL.createObjectURL(new Blob([data.buffer], { type: 'video/mp4' }));
+
+        // Tampilkan di UI
+        const player = document.getElementById('player');
+        const downloadBtn = document.getElementById('download');
+        
+        player.src = url;
+        downloadBtn.href = url;
+        downloadBtn.download = "rprtx_clip.mp4";
+        
+        document.getElementById('result-area').classList.remove('hidden');
+        downloadBtn.classList.remove('hidden');
+        
+        statusEl.innerText = "STATUS: CLIP_COMPLETED";
+        statusEl.classList.replace('text-yellow-500', 'text-green-500');
+
+    } catch (error) {
+        console.error(error);
+        statusEl.innerText = "STATUS: FAILED_TO_PROCESS";
+        statusEl.classList.replace('text-yellow-500', 'text-red-500');
+        alert("Gagal memproses video. Pastikan link adalah direct link .mp4 dan mendukung CORS.");
+    }
 }
 
 init();
