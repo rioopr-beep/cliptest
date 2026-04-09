@@ -3,237 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>rprtx — Digital Archive</title>
-    
+    <title>About — rprtx</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-    <script src="https://unpkg.com/split-type"></script>
-
     <style>
-        :root {
-            --bg-dark: #050505;
-            --accent-indigo: #6366f1;
-            --panel-border: rgba(255, 255, 255, 0.05);
-            --text-main: #ffffff;
-            --font-mono: 'Fira Code', monospace;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-
-        html.lenis { height: auto; }
-        .lenis-smooth { scroll-behavior: auto !important; }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: 'Inter', system-ui, sans-serif;
-            overflow-x: hidden;
-            cursor: none;
-        }
-
-        /* 1. CURSOR FOLLOWER */
-        .cursor-follower {
-            position: fixed;
-            width: 20px; height: 20px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            mix-blend-difference: difference;
-            will-change: transform;
-            display: none;
-        }
-        @media (pointer: fine) { .cursor-follower { display: block; } }
-        .cursor-follower.active { width: 80px; height: 80px; background-color: #fff; border: none; }
-
-        /* 2. FIXED SOCIAL NAVIGATION */
-        .fixed-nav {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            right: 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .social-links a {
-            margin-right: 1.5rem;
-            color: #666;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        .social-links a:hover { color: var(--accent-indigo); }
-
-        /* 3. LAYOUT ARCHITECTURE */
-        #main-wrapper { position: relative; width: 100%; overflow: hidden; }
-        .horizontal-container { display: flex; width: 500vw; height: 100vh; will-change: transform; }
-
-        .panel {
-            position: relative;
-            width: 100vw; height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; padding: 0 8vw;
-            border-right: 1px solid var(--panel-border);
-        }
-
-        .panel-title {
-            font-size: clamp(3rem, 12vw, 15rem);
-            font-weight: 900; line-height: 0.85;
-            text-transform: uppercase; letter-spacing: -0.05em;
-        }
-
-        .panel-number {
-            position: absolute; top: 10%; left: 8vw;
-            font-family: var(--font-mono); font-size: 0.75rem;
-            color: #444; text-transform: uppercase;
-        }
-
-        /* ABOUT PANEL SPECIFIC */
-        .about-text {
-            max-width: 600px;
-            font-size: clamp(1rem, 2vw, 1.5rem);
-            line-height: 1.6;
-            color: #aaa;
-            margin-top: 2rem;
-        }
-
-        .char { display: inline-block; transform: translateY(100%); opacity: 0; }
-        .text-stroke { -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); color: transparent; }
+        body { background: #050505; color: white; font-family: 'Inter', sans-serif; }
+        .nav-trigger { position: fixed; top: 30px; right: 40px; display: flex; gap: 6px; cursor: pointer; z-index: 1000; }
+        .nav-trigger span { width: 5px; height: 5px; background: white; border-radius: 50%; }
+        .nav-overlay { position: fixed; inset: 0; background: rgba(5,5,5,0.95); backdrop-filter: blur(15px); display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.5s; z-index: 999; }
+        .nav-overlay.is-open { opacity: 1; pointer-events: all; }
+        .nav-link { font-size: 3rem; font-weight: 900; text-transform: uppercase; margin: 10px; color: rgba(255,255,255,0.2); text-decoration: none; transition: 0.3s; }
+        .nav-link:hover { color: white; }
     </style>
 </head>
 <body>
 
-    <div class="cursor-follower"></div>
+    <div class="nav-trigger" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+    </div>
 
-    <nav class="fixed-nav">
-        <div class="social-links">
-            <a href="https://instagram.com/username" target="_blank" class="nav-item">Instagram</a>
-            <a href="https://linkedin.com/in/username" target="_blank" class="nav-item">LinkedIn</a>
-            <a href="mailto:email@domain.com" class="nav-item">Email</a>
-        </div>
-        <div class="copyright">© 2026 RPRTX</div>
+    <nav class="nav-overlay">
+        <a href="index.html" class="nav-link">Index</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="mailto:riokmxl@gmail.com" class="nav-link">Contact</a>
     </nav>
 
-    <main id="main-wrapper">
-        <div class="horizontal-container">
+    <main class="min-h-screen flex flex-col justify-center px-10 md:px-32">
+        <h1 class="text-6xl md:text-8xl font-black mb-10 text-indigo-500">ABOUT.</h1>
+        <div class="space-y-6 max-w-2xl text-zinc-400 text-lg md:text-xl">
+            <p>Saya adalah seorang entitas kreatif yang beroperasi di bawah bendera **rprtx**. Berfokus pada pengembangan sistem digital yang presisi dan estetika minimalis.</p>
             
-            <section class="panel">
-                <span class="panel-number">01 // WELCOME</span>
-                <h1 class="panel-title text-indigo-500 animate-text">Digital<br>System</h1>
-            </section>
-
-            <section class="panel bg-[#080808]">
-                <span class="panel-number">02 // ABOUT</span>
-                <h1 class="panel-title animate-text">The<br>Author</h1>
-                <p class="about-text">
-                    Saya adalah seorang Creative Engineer yang berfokus pada pengembangan antarmuka digital yang minimalis namun bertenaga. Stoikisme adalah fondasi kerja saya.
-                </p>
-            </section>
-
-            <section class="panel">
-                <span class="panel-number">03 // STACK</span>
-                <h1 class="panel-title animate-text">Core<br>Engine</h1>
-            </section>
-
-            <section class="panel bg-[#070707]">
-                <span class="panel-number">04 // FLOW</span>
-                <h1 class="panel-title text-stroke animate-text">Smooth<br>Motion</h1>
-            </section>
-
-            <section class="panel bg-[#6366f1]">
-                <span class="panel-number" style="color: rgba(0,0,0,0.4)">05 // STATUS</span>
-                <h1 class="panel-title text-black animate-text">Stay<br>Stoic</h1>
-            </section>
-
+            <div class="pt-10 flex flex-col gap-4">
+                <a href="https://www.instagram.com/24yoyopr" target="_blank" class="text-white hover:text-indigo-400 transition underline">Instagram</a>
+                <a href="mailto:riokmxl@gmail.com" class="text-white hover:text-indigo-400 transition underline">riokmxl@gmail.com</a>
+                <a href="https://linkedin.com" target="_blank" class="text-white hover:text-indigo-400 transition underline">LinkedIn</a>
+            </div>
         </div>
     </main>
 
     <script>
-        const RPRTX_Engine = {
-            init() {
-                this.initLenis();
-                this.initScrollArchitecture();
-                this.initTypography();
-                this.initInteractions();
-                this.handleResize();
-            },
-
-            initLenis() {
-                this.lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-                this.lenis.on('scroll', ScrollTrigger.update);
-                gsap.ticker.add((time) => { this.lenis.raf(time * 1000); });
-                gsap.ticker.lagSmoothing(0);
-            },
-
-            initScrollArchitecture() {
-                gsap.registerPlugin(ScrollTrigger);
-                const container = document.querySelector(".horizontal-container");
-                const sections = gsap.utils.toArray(".panel");
-
-                this.horizontalTween = gsap.to(sections, {
-                    xPercent: -100 * (sections.length - 1),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#main-wrapper",
-                        pin: true,
-                        scrub: 1,
-                        snap: 1 / (sections.length - 1),
-                        start: "top top",
-                        end: () => "+=" + container.offsetWidth,
-                        invalidateOnRefresh: true
-                    }
-                });
-            },
-
-            initTypography() {
-                document.querySelectorAll(".animate-text").forEach((target) => {
-                    const split = new SplitType(target, { types: 'chars' });
-                    gsap.fromTo(split.chars, 
-                        { y: 100, opacity: 0 }, 
-                        {
-                            y: 0, opacity: 1, stagger: 0.05, duration: 1.2, ease: "power4.out",
-                            scrollTrigger: {
-                                trigger: target,
-                                containerAnimation: this.horizontalTween,
-                                start: "left 85%",
-                                toggleActions: "play none none reverse"
-                            }
-                        }
-                    );
-                });
-            },
-
-            initInteractions() {
-                const follower = document.querySelector(".cursor-follower");
-                const xSetter = gsap.quickSetter(follower, "x", "px");
-                const ySetter = gsap.quickSetter(follower, "y", "px");
-
-                window.addEventListener("mousemove", (e) => {
-                    xSetter(e.clientX);
-                    ySetter(e.clientY);
-                });
-
-                document.querySelectorAll(".animate-text, .nav-item, .panel-title").forEach(el => {
-                    el.addEventListener("mouseenter", () => follower.classList.add("active"));
-                    el.addEventListener("mouseleave", () => follower.classList.remove("active"));
-                });
-            },
-
-            handleResize() { window.addEventListener("resize", () => { ScrollTrigger.refresh(); }); }
-        };
-
-        document.addEventListener("DOMContentLoaded", () => RPRTX_Engine.init());
+        const toggleNav = () => document.querySelector('.nav-overlay').classList.toggle('is-open');
     </script>
 </body>
 </html>
-
