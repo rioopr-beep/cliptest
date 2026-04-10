@@ -3,10 +3,7 @@
 
 :root {
     --bg: #050505;
-    --accent: #6366f1;
     --text: #ffffff;
-    --text-dim: rgba(255, 255, 255, 0.4);
-    --border: rgba(255, 255, 255, 0.08);
     --ease: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -42,55 +39,13 @@ body {
     position: fixed;
     width: 32px;
     height: 32px;
-    border: 1px solid var(--text-dim);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
-    will-change: transform;
 }
 
-/* --- Navigation & Overlay --- */
-.nav-trigger {
-    position: fixed;
-    top: 40px;
-    right: 50px;
-    z-index: 2000;
-    font-size: 24px;
-    font-weight: 700;
-    color: #fff;
-    background: none;
-    border: none;
-    transition: 0.4s var(--ease);
-}
-
-.nav-trigger:hover { color: var(--accent); letter-spacing: 6px; }
-
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(5, 5, 5, 0.98);
-    backdrop-filter: blur(25px);
-    z-index: 1500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.6s var(--ease), visibility 0.6s;
-}
-
-.overlay.active { opacity: 1; visibility: visible; }
-
-.nav-link {
-    font-size: clamp(3rem, 10vw, 8rem);
-    font-weight: 900;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: #fff;
-    transition: 0.5s var(--ease);
-}
-
-/* --- Horizontal Layout Engine --- */
+/* --- Layout Engine --- */
 .scroll-wrapper { 
     position: relative; 
     width: 100%; 
@@ -102,7 +57,6 @@ body {
     display: flex; 
     width: 500vw; 
     height: 100vh; 
-    will-change: transform; 
 }
 
 .panel { 
@@ -112,29 +66,15 @@ body {
     display: flex; 
     justify-content: center; 
     align-items: center; 
-    padding: 0 8vw; 
-    border-right: 1px solid var(--border); 
     position: relative; 
+    border-right: 1px solid rgba(255,255,255,0.05);
 }
 
-/* --- Floating Photos --- */
-.floating-photo {
-    position: absolute;
-    width: 300px;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-    filter: grayscale(100%);
-    opacity: 0.4;
-    z-index: 5;
-    pointer-events: none;
-}
-
-/* --- TEXT MASKING (THE SMOKE ENGINE) --- */
+/* --- THE SMOKE ENGINE (FIXED) --- */
 .masking-container {
     width: 100%;
     text-align: center;
-    z-index: 50; /* Memastikan di depan foto melayang */
+    z-index: 50;
     position: relative;
 }
 
@@ -143,34 +83,37 @@ body {
     font-weight: 900;
     text-transform: uppercase;
     white-space: nowrap;
-    letter-spacing: -0.05em;
     line-height: 0.8;
     
-    /* FIX: Teks muncul putih dulu jika gambar gagal dimuat */
-    color: #ffffff; 
+    /* Paksa warna dasar HITAM agar saat transisi tidak warna-warni */
+    background-color: #000; 
+    color: #fff; 
     
-    /* Gambar Asap Gelap/Abstrak */
+    /* Gambar Asap Gelap - Gunakan URL yang lebih stabil */
     background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1470&auto=format&fit=crop'); 
-    background-size: cover;
+    background-size: 200% auto;
     background-repeat: repeat;
     
-    /* Masking Logic */
+    /* Rendering Masking */
     background-clip: text;
     -webkit-background-clip: text;
+    
+    /* Hapus warna teks asli */
     -webkit-text-fill-color: transparent; 
     
+    /* Efek visual */
+    filter: brightness(1.2) contrast(1.1);
     opacity: 0.9;
-    filter: contrast(1.2) brightness(1.1);
+    will-change: background-position;
 }
 
-/* Variasi Animasi Per Panel (ID Spesifik) */
-#init-text { animation: smoke-h 30s infinite linear; }
-#rio-text { animation: smoke-d 20s infinite linear; }
-#future-text { animation: smoke-v 25s infinite linear reverse; }
-#flow-text { animation: smoke-d 35s infinite linear alternate; }
-#stoic-text { animation: smoke-v 15s infinite linear; }
+/* --- Animasi Asap Spesifik --- */
+#init-text { animation: smoke-h 40s infinite linear; }
+#rio-text { animation: smoke-d 25s infinite linear; }
+#future-text { animation: smoke-v 30s infinite linear reverse; }
+#flow-text { animation: smoke-d 45s infinite linear alternate; }
+#stoic-text { animation: smoke-v 20s infinite linear; }
 
-/* Keyframes untuk simulasi asap bergerak */
 @keyframes smoke-h { 
     0% { background-position: 0% 50%; } 
     100% { background-position: 100% 50%; } 
@@ -186,15 +129,20 @@ body {
     100% { background-position: 50% 100%; } 
 }
 
-/* GSAP Helper: Untuk SplitType chars */
+/* GSAP Helper */
 .char { 
     display: inline-block; 
-    will-change: transform, opacity; 
+    opacity: 0; /* Default 0, akan diubah GSAP ke 1 */
 }
 
-/* Responsive Mobile */
-@media (max-width: 768px) {
-    .masked-text { font-size: 14vw; }
-    .floating-photo { width: 180px; height: 250px; }
-    .nav-trigger { top: 20px; right: 20px; }
+/* Floating Elements */
+.floating-photo {
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    opacity: 0.3;
+    filter: grayscale(100%);
+    z-index: 5;
+    pointer-events: none;
 }
