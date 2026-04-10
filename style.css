@@ -49,7 +49,7 @@ body {
     will-change: transform;
 }
 
-/* --- Navigation --- */
+/* --- Navigation & Overlay --- */
 .nav-trigger {
     position: fixed;
     top: 40px;
@@ -90,12 +90,32 @@ body {
     transition: 0.5s var(--ease);
 }
 
-.nav-link:hover { transform: skewX(-8deg) scale(1.05); color: var(--accent); }
+/* --- Horizontal Layout Engine --- */
+.scroll-wrapper { 
+    position: relative; 
+    width: 100%; 
+    height: 100vh; 
+    overflow: hidden; 
+}
 
-/* --- Layout Engine --- */
-.scroll-wrapper { position: relative; width: 100%; height: 100vh; overflow: hidden; }
-.scroll-content { display: flex; width: 500vw; height: 100vh; will-change: transform; }
-.panel { flex-shrink: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 0 8vw; border-right: 1px solid var(--border); position: relative; }
+.scroll-content { 
+    display: flex; 
+    width: 500vw; 
+    height: 100vh; 
+    will-change: transform; 
+}
+
+.panel { 
+    flex-shrink: 0; 
+    width: 100vw; 
+    height: 100vh; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 0 8vw; 
+    border-right: 1px solid var(--border); 
+    position: relative; 
+}
 
 /* --- Floating Photos --- */
 .floating-photo {
@@ -110,11 +130,12 @@ body {
     pointer-events: none;
 }
 
-/* --- TEXT MASKING (SMOKE ENGINE) --- */
+/* --- TEXT MASKING (THE SMOKE ENGINE) --- */
 .masking-container {
     width: 100%;
     text-align: center;
-    z-index: 10;
+    z-index: 50; /* Memastikan di depan foto melayang */
+    position: relative;
 }
 
 .masked-text {
@@ -125,33 +146,55 @@ body {
     letter-spacing: -0.05em;
     line-height: 0.8;
     
-    /* Perbaikan agar teks muncul jika masking gagal */
+    /* FIX: Teks muncul putih dulu jika gambar gagal dimuat */
     color: #ffffff; 
-    background-image: url('https://images.unsplash.com/photo-1579313279183-11f81d59f0f9?q=80&w=1374&auto=format&fit=crop'); 
-    background-size: 200% auto;
     
+    /* Gambar Asap Gelap/Abstrak */
+    background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=1470&auto=format&fit=crop'); 
+    background-size: cover;
+    background-repeat: repeat;
+    
+    /* Masking Logic */
     background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent; 
     
-    opacity: 0.8; 
-    filter: brightness(1.1);
+    opacity: 0.9;
+    filter: contrast(1.2) brightness(1.1);
 }
 
-/* Animasi Asap */
+/* Variasi Animasi Per Panel (ID Spesifik) */
 #init-text { animation: smoke-h 30s infinite linear; }
 #rio-text { animation: smoke-d 20s infinite linear; }
 #future-text { animation: smoke-v 25s infinite linear reverse; }
 #flow-text { animation: smoke-d 35s infinite linear alternate; }
 #stoic-text { animation: smoke-v 15s infinite linear; }
 
-@keyframes smoke-h { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
-@keyframes smoke-d { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
-@keyframes smoke-v { 0% { background-position: 50% 0%; } 100% { background-position: 50% 100%; } }
+/* Keyframes untuk simulasi asap bergerak */
+@keyframes smoke-h { 
+    0% { background-position: 0% 50%; } 
+    100% { background-position: 100% 50%; } 
+}
 
-/* GSAP Helper */
-.char { display: inline-block; will-change: transform, opacity; }
+@keyframes smoke-d { 
+    0% { background-position: 0% 0%; } 
+    100% { background-position: 100% 100%; } 
+}
 
+@keyframes smoke-v { 
+    0% { background-position: 50% 0%; } 
+    100% { background-position: 50% 100%; } 
+}
+
+/* GSAP Helper: Untuk SplitType chars */
+.char { 
+    display: inline-block; 
+    will-change: transform, opacity; 
+}
+
+/* Responsive Mobile */
 @media (max-width: 768px) {
     .masked-text { font-size: 14vw; }
+    .floating-photo { width: 180px; height: 250px; }
+    .nav-trigger { top: 20px; right: 20px; }
 }
