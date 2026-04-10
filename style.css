@@ -1,8 +1,5 @@
-/* * * RPRTX - ARCHIVE DESIGN SYSTEM 2026
- * Professional, Clean, & High-Performance
- */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+/* * * RPRTX - ARCHIVE DESIGN SYSTEM 2026 * * */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@900&display=swap');
 
 :root {
     --bg: #050505;
@@ -24,12 +21,12 @@
 body {
     background-color: var(--bg);
     color: var(--text);
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
 
-/* --- Custom Cursor System --- */
+/* --- Custom Cursor --- */
 .cursor {
     position: fixed;
     width: 8px;
@@ -52,7 +49,7 @@ body {
     will-change: transform;
 }
 
-/* --- Navigation & Overlay --- */
+/* --- Navigation --- */
 .nav-trigger {
     position: fixed;
     top: 40px;
@@ -60,24 +57,19 @@ body {
     z-index: 2000;
     font-size: 24px;
     font-weight: 700;
-    letter-spacing: 2px;
     color: #fff;
     background: none;
     border: none;
     transition: 0.4s var(--ease);
 }
 
-.nav-trigger:hover {
-    color: var(--accent);
-    letter-spacing: 6px;
-}
+.nav-trigger:hover { color: var(--accent); letter-spacing: 6px; }
 
 .overlay {
     position: fixed;
     inset: 0;
     background: rgba(5, 5, 5, 0.98);
     backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
     z-index: 1500;
     display: flex;
     justify-content: center;
@@ -87,10 +79,7 @@ body {
     transition: opacity 0.6s var(--ease), visibility 0.6s;
 }
 
-.overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
+.overlay.active { opacity: 1; visibility: visible; }
 
 .nav-link {
     font-size: clamp(3rem, 10vw, 8rem);
@@ -101,187 +90,68 @@ body {
     transition: 0.5s var(--ease);
 }
 
-.nav-link:hover {
-    transform: skewX(-8deg) scale(1.05);
-    color: var(--accent);
-}
+.nav-link:hover { transform: skewX(-8deg) scale(1.05); color: var(--accent); }
 
-/* --- Horizontal Layout (Index) --- */
-.scroll-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.scroll-content {
-    display: flex;
-    width: 500vw;
-    height: 100vh;
-    will-change: transform;
-}
-
-.panel {
-    flex-shrink: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 0 8vw;
-    border-right: 1px solid var(--border);
-}
-
-.panel-title {
-    font-size: clamp(4rem, 16vw, 20rem);
-    font-weight: 900;
-    text-transform: uppercase;
-    white-space: nowrap;
-    letter-spacing: -0.05em;
-    line-height: 1;
-}
-
-.stroke-text {
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.25);
-    color: transparent;
-}
+/* --- Layout Engine --- */
+.scroll-wrapper { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+.scroll-content { display: flex; width: 500vw; height: 100vh; will-change: transform; }
+.panel { flex-shrink: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 0 8vw; border-right: 1px solid var(--border); position: relative; }
 
 /* --- Floating Photos --- */
 .floating-photo {
     position: absolute;
-    width: 280px;
-    height: 380px;
+    width: 300px;
+    height: 400px;
     object-fit: cover;
     border-radius: 8px;
     filter: grayscale(100%);
-    opacity: 0.5;
-    z-index: 10;
+    opacity: 0.4;
+    z-index: 5;
     pointer-events: none;
 }
 
-/* --- About Page Specific --- */
-.about-main {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 10%;
+/* --- TEXT MASKING (SMOKE ENGINE) --- */
+.masking-container {
+    width: 100%;
+    text-align: center;
+    z-index: 10;
 }
 
-.falling-title {
-    font-size: clamp(4rem, 12vw, 10rem);
+.masked-text {
+    font-size: clamp(4rem, 15vw, 18rem);
     font-weight: 900;
-    color: var(--accent);
-    line-height: 0.85;
+    text-transform: uppercase;
+    white-space: nowrap;
+    letter-spacing: -0.05em;
+    line-height: 0.8;
+    
+    /* Perbaikan agar teks muncul jika masking gagal */
+    color: #ffffff; 
+    background-image: url('https://images.unsplash.com/photo-1579313279183-11f81d59f0f9?q=80&w=1374&auto=format&fit=crop'); 
+    background-size: 200% auto;
+    
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    opacity: 0.8; 
+    filter: brightness(1.1);
 }
 
-.social-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 3.5rem;
-}
+/* Animasi Asap */
+#init-text { animation: smoke-h 30s infinite linear; }
+#rio-text { animation: smoke-d 20s infinite linear; }
+#future-text { animation: smoke-v 25s infinite linear reverse; }
+#flow-text { animation: smoke-d 35s infinite linear alternate; }
+#stoic-text { animation: smoke-v 15s infinite linear; }
 
-.social-item {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    font-weight: 700;
-    text-decoration: none;
-    color: var(--text-dim);
-    transition: 0.4s var(--ease);
-    width: fit-content;
-}
-
-.social-item:hover {
-    color: #fff;
-    padding-left: 20px;
-}
-
-.close-btn {
-    position: fixed;
-    top: 40px;
-    right: 50px;
-    z-index: 1000;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--text-dim);
-    text-decoration: none;
-    border: 1px solid var(--border);
-    padding: 12px 24px;
-    transition: 0.3s;
-}
-
-.close-btn:hover {
-    background: #fff;
-    color: #000;
-}
+@keyframes smoke-h { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+@keyframes smoke-d { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+@keyframes smoke-v { 0% { background-position: 50% 0%; } 100% { background-position: 50% 100%; } }
 
 /* GSAP Helper */
-.char {
-    display: inline-block;
-    will-change: transform, opacity;
-}
+.char { display: inline-block; will-change: transform, opacity; }
 
-/* --- 3D CYLINDER CSS (ULTRA FULL SCREEN OPTIMIZED) --- */
-.container-3d {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2;
-    overflow: hidden;
-    /* Perspektif diturunkan untuk membuat distorsi 3D terasa memenuhi layar */
-    perspective: 600px; 
-    perspective-origin: center center;
-}
-
-.box-3d {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    animation: animate3D 20s linear infinite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.box-3d span {
-    position: absolute;
-    color: #ffffff;
-    
-    /* Ukuran font dinaikkan drastis agar mengisi tinggi layar secara vertikal */
-    font-size: 25vh; 
-    font-weight: 900;
-    white-space: nowrap;
-    text-transform: uppercase;
-    line-height: 1em;
-    padding: 0 50px;
-    transform-style: preserve-3d;
-    background: transparent;
-    
-    /* TranslateZ dinaikkan agar radius silinder menyentuh tepi layar horizontal */
-    transform: translate(-50%, -50%) rotateX(calc(var(--i) * 22.5deg)) translateZ(500px);
-    
-    backface-visibility: hidden;
-    opacity: 0.8;
-}
-
-.box-3d span i {
-    font-style: normal;
-}
-
-.box-3d span i:nth-child(1) { color: #6366f1; } 
-.box-3d span i:nth-child(2) { color: #c4c15c; } 
-
-@keyframes animate3D {
-    /* Menghilangkan rotasi sumbu Z (rotate 5deg) agar teks benar-benar rata full horisontal */
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(360deg); }
-}
-
-/* Penyesuaian untuk Mobile agar tetap full layar namun proporsional */
 @media (max-width: 768px) {
-    .box-3d span { 
-        font-size: 15vh; 
-        transform: translate(-50%, -50%) rotateX(calc(var(--i) * 22.5deg)) translateZ(320px); 
-    }
+    .masked-text { font-size: 14vw; }
 }
