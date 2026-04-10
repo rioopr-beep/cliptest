@@ -1,3 +1,7 @@
+Siap, **Rio**. Saya satukan semuanya ke dalam **satu file HTML utuh**.
+Semua logika **Horizontal Scroll**, **Custom Cursor**, dan **GSAP Animations** tetap dipertahankan 100% tanpa ada baris yang dikurangi. Panel 3D telah resmi diganti menjadi **Text Masking** dengan visual awan tipis yang bergerak elegan di dalam teks nama Anda.
+Berikut adalah kodenya:
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,7 +9,174 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rprtx — Creative Archive</title>
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* RESET & GLOBAL */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050505;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* KURSOR KUSTOM */
+        .cursor {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .cursor-follower {
+            width: 32px;
+            height: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* NAVIGASI OVERLAY */
+        .nav-trigger {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            color: white;
+            z-index: 100;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+            z-index: 90;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nav-link {
+            color: white;
+            font-size: 5vw;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: -2px;
+        }
+
+        /* HORIZONTAL SCROLL ENGINE */
+        .scroll-wrapper {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .scroll-content {
+            display: flex;
+            width: 500vw; 
+            height: 100vh;
+        }
+
+        .panel {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .panel-title {
+            font-size: 12vw;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 0.8;
+            position: relative;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .stroke-text {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+            color: transparent;
+        }
+
+        .floating-photo {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            object-fit: cover;
+            z-index: 5;
+            border-radius: 4px;
+            filter: grayscale(100%);
+            transition: filter 0.5s ease;
+        }
+
+        /* --- TEXT MASKING (AWAN BERGERAK) --- */
+        .masking-container {
+            width: 100%;
+            text-align: center;
+        }
+
+        .masked-text {
+            font-size: clamp(4rem, 16vw, 20rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            color: transparent;
+            
+            /* Latar belakang awan tipis */
+            background-image: url('https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?q=80&w=1374&auto=format&fit=crop'); 
+            background-size: 200% auto;
+            background-position: 0 50%;
+            
+            /* Efek Masking */
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            /* Animasi Awan Bergerak */
+            animation: animate-clouds 20s infinite alternate linear;
+            opacity: 0.7; /* Membuat awan terlihat samar/tipis */
+            filter: brightness(0.8);
+        }
+
+        @keyframes animate-clouds {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .panel-title { font-size: 18vw; }
+            .masked-text { font-size: 12vw; }
+            .floating-photo { width: 200px; height: 280px; }
+        }
+    </style>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -57,6 +228,98 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        const toggleNav = () => document.querySelector('.overlay').classList.toggle('active');
+
+        const Engine = {
+            init() {
+                this.setupCursor();
+                this.setupLenis();
+                this.setupScroll();
+                this.setupAnimations();
+                this.handleResize();
+            },
+
+            setupCursor() {
+                const cursor = document.querySelector(".cursor");
+                const follower = document.querySelector(".cursor-follower");
+                window.addEventListener("mousemove", (e) => {
+                    gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+                    gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.15 });
+                });
+            },
+
+            setupLenis() {
+                const lenis = new Lenis({ 
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+                });
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+            },
+
+            setupScroll() {
+                gsap.registerPlugin(ScrollTrigger);
+                const content = document.querySelector(".scroll-content");
+                const panels = gsap.utils.toArray(".panel");
+                
+                // Master Horizontal Scroll Logic
+                this.masterTween = gsap.to(panels, {
+                    xPercent: -100 * (panels.length - 1),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: ".scroll-wrapper",
+                        pin: true,
+                        scrub: 1,
+                        end: () => "+=" + content.offsetWidth
+                    }
+                });
+            },
+
+            setupAnimations() {
+                // Reveal Animation for Characters
+                document.querySelectorAll(".animate").forEach(el => {
+                    const split = new SplitType(el, { types: 'chars' });
+                    gsap.fromTo(split.chars, 
+                        { y: 150, opacity: 0 }, 
+                        {
+                            y: 0, opacity: 1, stagger: 0.04, duration: 1, ease: "power4.out",
+                            scrollTrigger: {
+                                trigger: el,
+                                containerAnimation: this.masterTween,
+                                start: "left 85%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+
+                // Parallax Floating Photos
+                gsap.utils.toArray(".floating-photo").forEach(img => {
+                    gsap.to(img, {
+                        x: -600,
+                        rotation: 12,
+                        ease: "none",
+                        scrollTrigger: {
+                            trigger: img,
+                            containerAnimation: this.masterTween,
+                            scrub: 1.5
+                        }
+                    });
+                });
+            },
+
+            handleResize() {
+                window.addEventListener("resize", () => ScrollTrigger.refresh());
+            }
+        };
+
+        window.onload = () => Engine.init();
+    </script>
 </body>
 </html>
+
+```
