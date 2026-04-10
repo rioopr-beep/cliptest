@@ -5,7 +5,164 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>rprtx — Creative Archive</title>
     
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* * * RPRTX - ARCHIVE DESIGN SYSTEM 2026 * * */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@900&display=swap');
+
+        :root {
+            --bg: #050505;
+            --accent: #6366f1;
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.4);
+            --border: rgba(255, 255, 255, 0.08);
+            --ease: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* --- Global Reset --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none !important;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Custom Cursor --- */
+        .cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-difference: difference;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--text-dim);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            will-change: transform;
+        }
+
+        /* --- Navigation --- */
+        .nav-trigger {
+            position: fixed;
+            top: 40px;
+            right: 50px;
+            z-index: 2000;
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            background: none;
+            border: none;
+            transition: 0.4s var(--ease);
+        }
+
+        .nav-trigger:hover { color: var(--accent); letter-spacing: 6px; }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 5, 5, 0.98);
+            backdrop-filter: blur(25px);
+            z-index: 1500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s var(--ease), visibility 0.6s;
+        }
+
+        .overlay.active { opacity: 1; visibility: visible; }
+
+        .nav-link {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #fff;
+            transition: 0.5s var(--ease);
+        }
+
+        .nav-link:hover { transform: skewX(-8deg) scale(1.05); color: var(--accent); }
+
+        /* --- Layout Engine --- */
+        .scroll-wrapper { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+        .scroll-content { display: flex; width: 500vw; height: 100vh; will-change: transform; }
+        .panel { flex-shrink: 0; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; padding: 0 8vw; border-right: 1px solid var(--border); position: relative; }
+
+        /* --- Floating Photos --- */
+        .floating-photo {
+            position: absolute;
+            width: 300px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            filter: grayscale(100%);
+            opacity: 0.4;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* --- TEXT MASKING (SMOKE ENGINE) --- */
+        .masking-container {
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .masked-text {
+            font-size: clamp(4rem, 15vw, 18rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            white-space: nowrap;
+            letter-spacing: -0.05em;
+            line-height: 0.8;
+            color: transparent;
+            
+            /* Visual Asap Hitam / Gelap */
+            background-image: url('https://images.unsplash.com/photo-1579313279183-11f81d59f0f9?q=80&w=1374&auto=format&fit=crop'); 
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            
+            opacity: 0.7; 
+            filter: brightness(0.9);
+        }
+
+        /* Variasi Animasi Per Panel */
+        #init-text { animation: smoke-h 30s infinite linear; }
+        #rio-text { animation: smoke-d 20s infinite linear; filter: brightness(1.2); }
+        #future-text { animation: smoke-v 25s infinite linear reverse; }
+        #flow-text { animation: smoke-d 35s infinite linear alternate; }
+        #stoic-text { animation: smoke-v 15s infinite linear; }
+
+        @keyframes smoke-h { 0% { background-position: 0% 50%; } 100% { background-position: 100% 50%; } }
+        @keyframes smoke-d { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
+        @keyframes smoke-v { 0% { background-position: 50% 0%; } 100% { background-position: 50% 100%; } }
+
+        .char { display: inline-block; will-change: transform, opacity; }
+
+        @media (max-width: 768px) {
+            .masked-text { font-size: 14vw; }
+            .floating-photo { width: 180px; height: 250px; }
+        }
+    </style>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -27,10 +184,10 @@
     <main class="scroll-wrapper">
         <div class="scroll-content">
             
-            <img src="https://picsum.photos/600/800?random=11" class="floating-photo" style="top: 15%; left: 130vw;">
-            <img src="https://picsum.photos/600/800?random=22" class="floating-photo" style="bottom: 10%; left: 260vw;">
-            <img src="https://picsum.photos/600/800?random=33" class="floating-photo" style="top: 20%; left: 380vw;">
-            <img src="https://picsum.photos/600/800?random=44" class="floating-photo" style="bottom: 15%; left: 450vw;">
+            <img src="https://picsum.photos/600/800?random=1" class="floating-photo" style="top: 15%; left: 130vw;">
+            <img src="https://picsum.photos/600/800?random=2" class="floating-photo" style="bottom: 10%; left: 260vw;">
+            <img src="https://picsum.photos/600/800?random=3" class="floating-photo" style="top: 20%; left: 380vw;">
+            <img src="https://picsum.photos/600/800?random=4" class="floating-photo" style="bottom: 15%; left: 450vw;">
 
             <section class="panel">
                 <div class="masking-container">
@@ -38,7 +195,7 @@
                 </div>
             </section>
             
-            <section class="panel bg-[#050505]">
+            <section class="panel">
                 <div class="masking-container">
                     <h1 id="rio-text" class="masked-text animate">RIO PRATAMA</h1>
                 </div>
@@ -50,13 +207,13 @@
                 </div>
             </section>
             
-            <section class="panel bg-[#060606]">
+            <section class="panel">
                 <div class="masking-container">
                     <h1 id="flow-text" class="masked-text animate">Visual Flow</h1>
                 </div>
             </section>
             
-            <section class="panel bg-[#080808]">
+            <section class="panel">
                 <div class="masking-container">
                     <h1 id="stoic-text" class="masked-text animate">Stay Stoic</h1>
                 </div>
@@ -65,6 +222,81 @@
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        const toggleNav = () => document.querySelector('.overlay').classList.toggle('active');
+
+        const Engine = {
+            init() {
+                this.setupCursor();
+                this.setupLenis();
+                this.setupScroll();
+                this.setupAnimations();
+                this.handleResize();
+            },
+
+            setupCursor() {
+                const cursor = document.querySelector(".cursor");
+                const follower = document.querySelector(".cursor-follower");
+                window.addEventListener("mousemove", (e) => {
+                    gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0 });
+                    gsap.to(follower, { x: e.clientX - 16, y: e.clientY - 16, duration: 0.15 });
+                });
+            },
+
+            setupLenis() {
+                const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+                function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+                requestAnimationFrame(raf);
+            },
+
+            setupScroll() {
+                gsap.registerPlugin(ScrollTrigger);
+                const panels = gsap.utils.toArray(".panel");
+                this.masterTween = gsap.to(panels, {
+                    xPercent: -100 * (panels.length - 1),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: ".scroll-wrapper",
+                        pin: true,
+                        scrub: 1,
+                        end: () => "+=" + document.querySelector(".scroll-content").offsetWidth
+                    }
+                });
+            },
+
+            setupAnimations() {
+                document.querySelectorAll(".animate").forEach(el => {
+                    const split = new SplitType(el, { types: 'chars' });
+                    gsap.fromTo(split.chars, 
+                        { y: 150, opacity: 0 }, 
+                        {
+                            y: 0, opacity: 1, stagger: 0.04, duration: 1, ease: "power4.out",
+                            scrollTrigger: {
+                                trigger: el,
+                                containerAnimation: this.masterTween,
+                                start: "left 85%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+
+                gsap.utils.toArray(".floating-photo").forEach(img => {
+                    gsap.to(img, {
+                        x: -600, rotation: 12, ease: "none",
+                        scrollTrigger: {
+                            trigger: img,
+                            containerAnimation: this.masterTween,
+                            scrub: 1.5
+                        }
+                    });
+                });
+            },
+
+            handleResize() { window.addEventListener("resize", () => ScrollTrigger.refresh()); }
+        };
+
+        window.onload = () => Engine.init();
+    </script>
 </body>
 </html>
