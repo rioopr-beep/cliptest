@@ -218,3 +218,70 @@ body {
     display: inline-block;
     will-change: transform, opacity;
 }
+
+/* --- 3D CYLINDER CSS (ULTRA FULL SCREEN OPTIMIZED) --- */
+.container-3d {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    overflow: hidden;
+    /* Perspektif diturunkan untuk membuat distorsi 3D terasa memenuhi layar */
+    perspective: 600px; 
+    perspective-origin: center center;
+}
+
+.box-3d {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: animate3D 20s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-3d span {
+    position: absolute;
+    color: #ffffff;
+    
+    /* Ukuran font dinaikkan drastis agar mengisi tinggi layar secara vertikal */
+    font-size: 25vh; 
+    font-weight: 900;
+    white-space: nowrap;
+    text-transform: uppercase;
+    line-height: 1em;
+    padding: 0 50px;
+    transform-style: preserve-3d;
+    background: transparent;
+    
+    /* TranslateZ dinaikkan agar radius silinder menyentuh tepi layar horizontal */
+    transform: translate(-50%, -50%) rotateX(calc(var(--i) * 22.5deg)) translateZ(500px);
+    
+    backface-visibility: hidden;
+    opacity: 0.8;
+}
+
+.box-3d span i {
+    font-style: normal;
+}
+
+.box-3d span i:nth-child(1) { color: #6366f1; } 
+.box-3d span i:nth-child(2) { color: #c4c15c; } 
+
+@keyframes animate3D {
+    /* Menghilangkan rotasi sumbu Z (rotate 5deg) agar teks benar-benar rata full horisontal */
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(360deg); }
+}
+
+/* Penyesuaian untuk Mobile agar tetap full layar namun proporsional */
+@media (max-width: 768px) {
+    .box-3d span { 
+        font-size: 15vh; 
+        transform: translate(-50%, -50%) rotateX(calc(var(--i) * 22.5deg)) translateZ(320px); 
+    }
+}
