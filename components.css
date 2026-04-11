@@ -1,0 +1,28 @@
+.cube-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    background: var(--accent-color);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 1.2rem;
+    border: 2px solid var(--accent-color);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cube-link:hover {
+    background: transparent;
+    color: var(--accent-color);
+    transform: rotate(90deg);
+}
+
+.back-btn {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--accent-color);
+    padding-bottom: 5px;
+}
