@@ -1,36 +1,52 @@
 /* layout.css */
 
-.side-header {
+.brand-container {
     position: fixed;
-    left: 30px; 
-    top: 30px; /* Kita taruh di pojok kiri atas agar lebih bersih */
-    z-index: 100;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Menjaga teks tetap tepat di tengah layar */
+    z-index: 10;
+    text-align: center;
+    width: 100%;
 }
 
 .kinetic-wrapper {
-    display: block;
+    position: relative;
+    display: inline-block;
 }
 
 .k-layer {
-    font-size: 1.1rem; /* Sangat kecil dan minimalis */
-    font-weight: 700;
-    letter-spacing: 2px; /* Memberi ruang antar huruf agar estetik */
-    line-height: 1.2;
+    /* Ukuran Title yang lebih manusiawi */
+    font-size: clamp(2rem, 8vw, 4rem); 
+    font-weight: 900;
     display: block;
     text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -2px;
 }
 
-/* Hilangkan efek tumpuk yang terlalu tebal jika sudah kecil */
-.l-fire, .l-3 {
-    opacity: 0.5; /* Buat bayangannya lebih tipis */
+/* Efek tumpukan agar tetap terlihat kinetik tapi tidak berantakan */
+.l-fire {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+    z-index: -1;
 }
 
+.l-3 {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    opacity: 0.2;
+    z-index: -2;
+}
+
+/* Responsif untuk HP */
 @media (max-width: 768px) {
-    .side-header {
-        left: 20px;
-        top: 20px;
-    }
     .k-layer {
-        font-size: 0.9rem;
+        font-size: 2.5rem; /* Ukuran pas untuk layar HP */
+        letter-spacing: -1px;
     }
 }
