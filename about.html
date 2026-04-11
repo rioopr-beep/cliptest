@@ -1,44 +1,74 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — Project RP</title>
+    <meta name="description" content="System Architecture & Ecosystem">
+    <title>Rio Pratama | System</title>
+
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="typography.css">
+    <link rel="stylesheet" href="layout.css">
     <link rel="stylesheet" href="components.css">
     <link rel="stylesheet" href="effects.css">
-    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="responsive.css">
 </head>
-<body class="about-page">
+<body data-theme="dark-purple">
 
-    <section class="about-content">
-        <h1 class="8bit-text">RP</h1>
-        <p id="about-desc">
-            RP EXPERIMENT        </p>
-    </section>
+    <svg style="display: none;">
+        <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+            <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.05 0" />
+        </filter>
+    </svg>
+    <div class="noise-overlay"></div>
 
-    <section class="contact-section">
-        
-        <div class="kinetic-contact" id="ig-link" onclick="window.open('https://instagram.com/24yoyopr', '_blank')">
-            <span class="k-layer l-1">INSTAGRAM</span>
-            <span class="k-layer l-fire">INSTAGRAM</span>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <nav id="main-nav">
+        <div class="nav-brand">
+            <a href="index.html" class="nav-item">RP.</a>
         </div>
-
-        <div class="kinetic-contact" id="email-link" onclick="window.location.href='mailto:riokmxl@gmail.com'">
-            <span class="k-layer l-1">EMAIL</span>
-            <span class="k-layer l-fire">EMAIL</span>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item">INDEX</a>
+            <a href="about.html" class="nav-item" style="color: var(--color-neon);">SYSTEM</a>
         </div>
+    </nav>
 
-    </section>
+    <main id="smooth-wrapper">
+        <div id="smooth-content" class="canvas-3d-space">
+            
+            <section class="scene-node section-wrapper" data-depth="1.2">
+                <div class="grid-layout margin-top-large front-layer" data-transform-z="150">
+                    <div class="col-span-12 text-center margin-bottom-large">
+                        <h1 class="title-primary split-text">SYSTEM</h1>
+                        <h2 class="title-secondary">ARCHITECTURE</h2>
+                    </div>
+                    
+                    <div class="col-span-6 text-left" data-transform-z="50">
+                        <p class="text-body" style="font-size: var(--text-display); line-height: 1.2;">
+                            Building robust logic and automated ecosystems.
+                        </p>
+                        <div class="action-node" style="justify-content: flex-start; margin-top: 5vh;">
+                            <a href="index.html" class="magnetic-button">
+                                <span class="button-label">RETURN TO INDEX</span>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-span-6 flex-center visual-node" data-transform-z="100" style="height: 40vh;">
+                        <div class="structure-block alpha" style="width: 100%; height: 100%;"></div>
+                    </div>
+                </div>
+            </section>
 
-    <div class="nav-container">
-        <a href="index.html" class="back-btn">BACK_TO_HOME</a>
-    </div>
+        </div>
+    </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="engine.js"></script>
     <script src="effects.js"></script>
-    
+    <script src="navigation.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
