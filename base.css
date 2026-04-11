@@ -1,30 +1,83 @@
 :root {
-    --bg-color: #050505;
-    --text-color: #ffffff;
-    --accent-color: #ff4500; /* Merah Api */
-    --font-main: 'Montserrat', sans-serif;
+    --color-void: #030305;
+    --color-neon: #9d4edd;
+    --color-dim: #240046;
+    --color-text: #f8f9fa;
+    
+    --z-perspective: 1200px;
+    --ease-wodniack: cubic-bezier(0.19, 1, 0.22, 1);
+    --transition-slow: 1.2s var(--ease-wodniack);
+    --transition-fast: 0.4s var(--ease-wodniack);
+    
+    --spacing-unit: 1rem;
 }
 
-* {
+*, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: var(--font-main);
-    overflow-x: hidden;
+html, body {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-void);
+    color: var(--color-text);
+    overflow: hidden;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none;
+    cursor: crosshair;
 }
 
-#canvas {
+::selection {
+    background-color: var(--color-neon);
+    color: var(--color-text);
+}
+
+.noise-overlay {
     position: fixed;
     top: 0;
     left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.04;
+}
+
+.canvas-3d-space {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    perspective: var(--z-perspective);
+    transform-style: preserve-3d;
+}
+
+.scene-node {
+    position: relative;
     width: 100%;
     height: 100vh;
-    z-index: 1;
-    pointer-events: none;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.front-layer, .mid-layer, .back-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform-style: preserve-3d;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
 }
