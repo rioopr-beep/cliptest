@@ -1,15 +1,15 @@
-/* RESET & CORE */
+/* --- RESET & BODY --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background: #000;
-    color: white;
-    overflow-y: hidden; /* Matikan scroll atas-bawah */
-    overflow-x: auto;   /* Aktifkan scroll samping */
-    font-family: sans-serif;
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Mencegah scroll berantakan */
 }
 
-/* UI TETAP (FIXED) */
+/* --- UI TETAP (TIDAK BERUBAH) --- */
 .top-left-brand {
     position: fixed;
     top: 30px;
@@ -18,15 +18,14 @@ body {
 }
 
 .brand-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 900;
     letter-spacing: 2px;
-    text-transform: uppercase;
 }
 
 .bottom-nav {
     position: fixed;
-    bottom: 40px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 100;
@@ -35,91 +34,69 @@ body {
 .menu-trigger {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    text-decoration: none;
+    gap: 5px;
 }
 
-.bar {
-    width: 30px;
-    height: 2px;
-    background-color: white;
-}
+.bar { width: 25px; height: 2px; background: #fff; }
 
-/* SLIDER LOGIC */
+/* --- LOGIKA SLIDER (PENTING) --- */
 .horizontal-slider {
     display: flex;
-    width: 300vw; /* Lebar 3 halaman */
-    height: 100vh;
-}
-
-.slide {
     width: 100vw;
     height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory; /* Membuat scroll terasa magnetis */
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Menghilangkan scrollbar agar bersih */
+.horizontal-slider::-webkit-scrollbar { display: none; }
+
+.slide {
+    min-width: 100vw; /* Setiap slide setara lebar layar */
+    height: 100vh;
+    scroll-snap-align: start; /* Berhenti tepat di awal slide */
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
-}
-
-/* CODE EDITOR STYLE (PUNYA RIO) */
-.illustration-editor {
     position: relative;
-    display: grid;
-    justify-items: center;
 }
 
+/* --- ILUSTRASI EDITOR (PUNYA RIO) --- */
+.illustration-editor { position: relative; }
 .editor-block {
-    width: 380px;
-    height: 250px;
+    width: 320px;
+    height: 200px;
     background: linear-gradient(109.61deg, #4C4F5A 4.26%, #202125 84.84%);
     border-radius: 10px;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
 }
-
 .code {
     position: absolute;
-    width: 280px;
+    width: 260px;
     background: #1D1E22;
-    padding: 15px;
+    padding: 10px;
+    top: 30px;
+    left: -20px;
     border-radius: 6px;
-    top: 40px;
-}
-
-.code header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.code-content {
-    font-family: monospace;
-    font-size: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .c-p { color: #9F8198; }
 .c-o { color: #DE7300; }
 .c-y { color: #E1CA72; }
 
-/* TEXT REVEAL STYLE */
-.text-content { text-align: center; }
+/* --- TEXT STYLE --- */
+.text-content { text-align: center; padding: 20px; }
 .reveal-text {
-    font-size: clamp(3rem, 12vw, 8rem);
+    font-size: 3.5rem;
     font-weight: 900;
     line-height: 0.8;
-    letter-spacing: -4px;
 }
 
-.text-content p {
-    font-family: monospace;
-    color: #555;
-    margin-top: 20px;
-    font-size: 0.9rem;
-}
-
-/* RESPONSIVE */
 @media (max-width: 768px) {
-    .editor-block { width: 300px; height: 200px; }
-    .code { width: 240px; }
-    .reveal-text { font-size: 3rem; letter-spacing: -1px; }
+    .reveal-text { font-size: 2.5rem; }
+    .editor-block { width: 260px; }
+    .code { width: 200px; }
 }
