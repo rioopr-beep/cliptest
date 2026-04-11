@@ -2,35 +2,35 @@
 
 .side-header {
     position: fixed;
-    left: 40px; /* Jarak dari kiri */
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: auto;
+    left: 30px; 
+    top: 30px; /* Kita taruh di pojok kiri atas agar lebih bersih */
+    z-index: 100;
 }
 
 .kinetic-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    display: block;
 }
 
 .k-layer {
-    font-size: 2.5rem; /* Ukuran teks diperkecil (sebelumnya mungkin 5rem-8rem) */
-    line-height: 1;
-    white-space: nowrap;
+    font-size: 1.1rem; /* Sangat kecil dan minimalis */
+    font-weight: 700;
+    letter-spacing: 2px; /* Memberi ruang antar huruf agar estetik */
+    line-height: 1.2;
+    display: block;
     text-transform: uppercase;
-    letter-spacing: -1px;
 }
 
-/* Khusus tampilan HP agar tetap rapi */
+/* Hilangkan efek tumpuk yang terlalu tebal jika sudah kecil */
+.l-fire, .l-3 {
+    opacity: 0.5; /* Buat bayangannya lebih tipis */
+}
+
 @media (max-width: 768px) {
     .side-header {
         left: 20px;
-        top: 40px;
-        transform: none;
+        top: 20px;
     }
     .k-layer {
-        font-size: 1.8rem;
+        font-size: 0.9rem;
     }
 }
