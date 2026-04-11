@@ -1,4 +1,15 @@
-/* Branding Kiri Atas */
+/* RESET & CORE */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: #000;
+    color: white;
+    overflow-y: hidden; /* Matikan scroll atas-bawah */
+    overflow-x: auto;   /* Aktifkan scroll samping */
+    font-family: sans-serif;
+}
+
+/* UI TETAP (FIXED) */
 .top-left-brand {
     position: fixed;
     top: 30px;
@@ -7,14 +18,12 @@
 }
 
 .brand-name {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 900;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: white;
 }
 
-/* Navigasi Strip 3 di Bawah Tengah */
 .bottom-nav {
     position: fixed;
     bottom: 40px;
@@ -27,25 +36,90 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
-    cursor: pointer;
-    padding: 10px;
+    text-decoration: none;
 }
 
 .bar {
     width: 30px;
     height: 2px;
     background-color: white;
-    display: block;
-    transition: 0.3s;
 }
 
-/* Efek saat hover agar lebih hidup */
-.menu-trigger:hover .bar {
-    background-color: #ff0000; /* Warna merah saat disentuh */
+/* SLIDER LOGIC */
+.horizontal-slider {
+    display: flex;
+    width: 300vw; /* Lebar 3 halaman */
+    height: 100vh;
 }
 
+.slide {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* CODE EDITOR STYLE (PUNYA RIO) */
+.illustration-editor {
+    position: relative;
+    display: grid;
+    justify-items: center;
+}
+
+.editor-block {
+    width: 380px;
+    height: 250px;
+    background: linear-gradient(109.61deg, #4C4F5A 4.26%, #202125 84.84%);
+    border-radius: 10px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+}
+
+.code {
+    position: absolute;
+    width: 280px;
+    background: #1D1E22;
+    padding: 15px;
+    border-radius: 6px;
+    top: 40px;
+}
+
+.code header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.code-content {
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.c-p { color: #9F8198; }
+.c-o { color: #DE7300; }
+.c-y { color: #E1CA72; }
+
+/* TEXT REVEAL STYLE */
+.text-content { text-align: center; }
+.reveal-text {
+    font-size: clamp(3rem, 12vw, 8rem);
+    font-weight: 900;
+    line-height: 0.8;
+    letter-spacing: -4px;
+}
+
+.text-content p {
+    font-family: monospace;
+    color: #555;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
-    .top-left-brand { top: 20px; left: 20px; }
-    .brand-name { font-size: 1rem; }
-    .bottom-nav { bottom: 30px; }
+    .editor-block { width: 300px; height: 200px; }
+    .code { width: 240px; }
+    .reveal-text { font-size: 3rem; letter-spacing: -1px; }
 }
