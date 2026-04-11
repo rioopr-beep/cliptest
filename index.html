@@ -4,23 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rio Pratama</title>
+    
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="typography.css">
     <link rel="stylesheet" href="layout.css">
     <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="responsive.css">
 </head>
 <body>
+
     <div id="loader" class="loader">
         <span class="loader-text">LOADING</span>
     </div>
 
-    <div class="brand-container" id="rioKinetic">
-        <span class="k-layer l-1">RIO PRATAMA</span>
-        <span class="k-layer l-fire">RIO PRATAMA</span>
-        <span class="k-layer l-3">RIO PRATAMA</span>
-    </div>
+    <header class="brand-container" id="rioKinetic">
+        <div class="kinetic-wrapper">
+            <span class="k-layer l-1">RIO PRATAMA</span>
+            <span class="k-layer l-fire">RIO PRATAMA</span>
+            <span class="k-layer l-3">RIO PRATAMA</span>
+        </div>
+    </header>
 
-    <div id="canvas"></div> <nav class="main-nav">
+    <div id="canvas"></div>
+
+    <nav class="main-nav">
         <a href="about.html" class="cube-link">RP</a>
     </nav>
 
@@ -30,7 +37,7 @@
 
     <script src="loader.js"></script>
     <script src="engine.js"></script>
-    <script src="navigation.js"></script>
     <script src="effects.js"></script>
+
 </body>
 </html>
