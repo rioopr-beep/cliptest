@@ -1,5 +1,3 @@
-/* loader.js */
-
 document.addEventListener('DOMContentLoaded', () => {
     const loaderWrapper = document.querySelector('.loader-wrapper');
     const progressText = document.getElementById('progress-text');
