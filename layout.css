@@ -1,52 +1,51 @@
-/* layout.css */
-
-.brand-container {
+/* Branding Kiri Atas */
+.top-left-brand {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Menjaga teks tetap tepat di tengah layar */
-    z-index: 10;
-    text-align: center;
-    width: 100%;
+    top: 30px;
+    left: 30px;
+    z-index: 100;
 }
 
-.kinetic-wrapper {
-    position: relative;
-    display: inline-block;
-}
-
-.k-layer {
-    /* Ukuran Title yang lebih manusiawi */
-    font-size: clamp(2rem, 8vw, 4rem); 
+.brand-name {
+    font-size: 1.2rem;
     font-weight: 900;
-    display: block;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    line-height: 0.9;
-    letter-spacing: -2px;
+    color: white;
 }
 
-/* Efek tumpukan agar tetap terlihat kinetik tapi tidak berantakan */
-.l-fire {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.3);
-    z-index: -1;
+/* Navigasi Strip 3 di Bawah Tengah */
+.bottom-nav {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
 }
 
-.l-3 {
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    opacity: 0.2;
-    z-index: -2;
+.menu-trigger {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    padding: 10px;
 }
 
-/* Responsif untuk HP */
+.bar {
+    width: 30px;
+    height: 2px;
+    background-color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+/* Efek saat hover agar lebih hidup */
+.menu-trigger:hover .bar {
+    background-color: #ff0000; /* Warna merah saat disentuh */
+}
+
 @media (max-width: 768px) {
-    .k-layer {
-        font-size: 2.5rem; /* Ukuran pas untuk layar HP */
-        letter-spacing: -1px;
-    }
+    .top-left-brand { top: 20px; left: 20px; }
+    .brand-name { font-size: 1rem; }
+    .bottom-nav { bottom: 30px; }
 }
