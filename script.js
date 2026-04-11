@@ -1,38 +1,28 @@
-/**
- * Fungsi untuk membuka/menutup Menu Navigasi
- */
+// 1. Fungsi Toggle Menu
 function toggleMenu() {
     const options = document.getElementById('menuOptions');
     const trigger = document.querySelector('.menu-trigger');
-    
-    // Toggle class 'active' untuk memicu animasi CSS
     options.classList.toggle('active');
     trigger.classList.toggle('active');
 }
 
-/**
- * Mencegah Klik Menu tertutup secara tidak sengaja
- */
+// 2. Fungsi Menghilangkan Loader (Solusi Stuck)
+window.addEventListener('load', function() {
+    const loader = document.getElementById('loader');
+    
+    // Memberi sedikit jeda agar transisinya halus
+    setTimeout(() => {
+        loader.classList.add('finished');
+    }, 1000); 
+});
+
+// 3. Menutup menu jika klik di luar
 document.addEventListener('click', function(event) {
     const nav = document.querySelector('.bottom-nav');
     const options = document.getElementById('menuOptions');
     const trigger = document.querySelector('.menu-trigger');
-    
-    // Jika klik dilakukan di luar area menu, tutup menu
-    if (!nav.contains(event.target)) {
+    if (nav && !nav.contains(event.target)) {
         options.classList.remove('active');
         trigger.classList.remove('active');
     }
 });
-
-/**
- * GSAP Animasi untuk teks saat slide muncul (Optional)
- */
-window.onload = () => {
-    gsap.from(".top-left-brand", { 
-        duration: 1.5, 
-        y: -50, 
-        opacity: 0, 
-        ease: "power4.out" 
-    });
-};
