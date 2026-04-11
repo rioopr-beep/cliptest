@@ -1,15 +1,106 @@
-@media (max-width: 600px) {
-    .k-layer {
-        font-size: 3.5rem;
+@media screen and (max-width: 1024px) {
+    :root {
+        --text-massive: clamp(3rem, 8vw, 8rem);
+        --z-perspective: 1000px;
+    }
+
+    .visual-node {
+        width: 90vw;
+        gap: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    :root {
+        --text-massive: clamp(2.5rem, 12vw, 4rem);
+        --text-display: clamp(1.5rem, 8vw, 2.5rem);
+        --spacing-unit: 0.5rem;
+        --z-perspective: 800px;
+    }
+
+    .hero-container {
+        padding: 0 1rem;
+    }
+
+    .visual-node {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 70vh;
+        gap: 1rem;
+    }
+
+    .structure-block {
+        min-height: 35vh;
+    }
+
+    .structure-block:hover {
+        transform: translateZ(20px); 
+    }
+
+    .cursor-dot, 
+    .cursor-outline {
+        display: none !important;
+    }
+
+    html, body {
+        cursor: auto;
+    }
+
+    .magnetic-button {
+        padding: 1rem 2rem;
+        width: 100%;
+        max-width: 280px;
     }
     
-    .brand-container {
-        top: 5vh;
-        left: 5vw;
+    .wireframe-grid {
+        background-size: 30px 30px;
+        transform: rotateX(60deg) translateY(-50px) translateZ(-100px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .action-node {
+        margin-top: 5vh;
+    }
+
+    .purple-ambient-glow {
+        width: 100vw;
+        height: 100vw;
+        filter: blur(50px);
     }
     
-    .main-nav {
-        bottom: 3vh;
-        right: 5vw;
+    .footer-container {
+        padding-bottom: 3vh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .canvas-3d-space,
+    .scene-node,
+    .front-layer,
+    .mid-layer,
+    .back-layer {
+        transform: none !important;
+        transition: none !important;
+    }
+    
+    #smooth-content {
+        transform: none !important;
+    }
+    
+    html, body {
+        overflow: auto;
+    }
+    
+    #smooth-wrapper {
+        position: static;
+        overflow: visible;
     }
 }
