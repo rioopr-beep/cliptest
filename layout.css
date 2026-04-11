@@ -1,5 +1,4 @@
-/* --- RESET CORE --- */
-* {
+ {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -10,11 +9,11 @@ body {
     color: #fff;
     width: 100vw;
     height: 100vh;
-    overflow: hidden; /* Mengunci scroll vertikal */
+    overflow: hidden; 
+
     font-family: 'Inter', sans-serif;
 }
 
-/* --- UI TETAP (FIXED ELEMENTS) --- */
 .top-left-brand {
     position: fixed;
     top: 30px;
@@ -52,7 +51,6 @@ body {
     transition: 0.3s ease;
 }
 
-/* --- LOGIKA HORIZONTAL SCROLL --- */
 .horizontal-slider {
     display: flex;
     width: 100vw;
@@ -65,7 +63,7 @@ body {
 }
 
 .horizontal-slider::-webkit-scrollbar {
-    display: none; /* Sembunyikan scrollbar */
+    display: none; 
 }
 
 .slide {
@@ -79,7 +77,6 @@ body {
     padding: 40px;
 }
 
-/* --- ILUSTRASI EDITOR (SESUAI GAMBAR) --- */
 .illustration-editor {
     position: relative;
     width: 500px;
@@ -121,7 +118,6 @@ body {
     color: #C5C8D4;
 }
 
-/* Penempatan Jendela Kode */
 .code-html {
     top: 20px;
     left: -40px;
@@ -131,7 +127,7 @@ body {
     top: 130px;
     left: 100px;
     width: 280px;
-    z-index: 20; /* Berada paling atas */
+    z-index: 20;
 }
 
 .code-js {
@@ -139,7 +135,6 @@ body {
     left: -80px;
 }
 
-/* Warna Syntax */
 .c-r { color: #A88038; } 
 .c-o { color: #DE7300; } 
 .c-y { color: #E1CA72; } 
@@ -148,7 +143,6 @@ body {
 .c-b { color: #7A99AD; } 
 .c-c { color: #666; }
 
-/* --- TEXT CONTENT STYLE --- */
 .text-content {
     text-align: center;
     max-width: 700px;
@@ -170,10 +164,9 @@ body {
     letter-spacing: 1px;
 }
 
-/* --- RESPONSIVE MOBILE --- */
 @media (max-width: 768px) {
     .illustration-editor {
-        transform: scale(0.65); /* Kecilkan konten di layar HP */
+        transform: scale(0.65);
     }
     
     .top-left-brand { top: 20px; left: 20px; }
