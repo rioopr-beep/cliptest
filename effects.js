@@ -79,31 +79,35 @@ class TextAnimator {
 
     init() {
         this.textElements.forEach(el => {
-            if(el.classList.contains('split-text') || el.children.length > 0) return;
+            if(el.classList.contains('split-text-done')) return;
             
             const content = el.innerText;
             el.innerHTML = '';
-            el.classList.add('split-text');
+            el.classList.add('split-text', 'split-text-done');
             
-            // PERBAIKAN: Memaksa kontainer teks menjadi flexbox yang bisa membungkus baris
             el.style.display = 'flex';
             el.style.flexWrap = 'wrap';
             el.style.justifyContent = 'center';
+            el.style.columnGap = '0.4em'; 
             
-            content.split('').forEach((char, i) => {
-                const charSpan = document.createElement('span');
-                charSpan.className = 'char';
+            const words = content.split(' ');
+            let delayCount = 0;
+            
+            words.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.style.display = 'inline-flex';
+                wordSpan.style.whiteSpace = 'nowrap';
                 
-                // PERBAIKAN: Membiarkan spasi normal agar browser bisa memutus baris
-                if (char === ' ') {
-                    charSpan.innerHTML = ' ';
-                    charSpan.style.whiteSpace = 'pre';
-                } else {
+                word.split('').forEach(char => {
+                    const charSpan = document.createElement('span');
+                    charSpan.className = 'char';
                     charSpan.innerHTML = char;
-                }
+                    charSpan.style.transitionDelay = `${delayCount * 0.03}s`;
+                    wordSpan.appendChild(charSpan);
+                    delayCount++;
+                });
                 
-                charSpan.style.transitionDelay = `${i * 0.03}s`;
-                el.appendChild(charSpan);
+                el.appendChild(wordSpan);
             });
         });
     }
