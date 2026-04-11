@@ -1,83 +1,70 @@
+/* base.css */
 :root {
     --color-void: #030305;
     --color-neon: #9d4edd;
     --color-dim: #240046;
-    --color-text: #f8f9fa;
-    
-    --z-perspective: 1200px;
-    --ease-wodniack: cubic-bezier(0.19, 1, 0.22, 1);
-    --transition-slow: 1.2s var(--ease-wodniack);
-    --transition-fast: 0.4s var(--ease-wodniack);
-    
-    --spacing-unit: 1rem;
+    --color-text: #ffffff;
+    --transition-fast: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --ease-wodniack: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-*, *::before, *::after {
-    box-sizing: border-box;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-html, body {
-    width: 100vw;
-    height: 100vh;
+body {
     background-color: var(--color-void);
     color: var(--color-text);
-    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overscroll-behavior: none;
-    cursor: crosshair;
-}
-
-::selection {
-    background-color: var(--color-neon);
-    color: var(--color-text);
+    background: radial-gradient(circle at center, #10002b 0%, var(--color-void) 80%);
 }
 
 .noise-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 9999;
     opacity: 0.04;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
 }
 
-.canvas-3d-space {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    perspective: var(--z-perspective);
-    transform-style: preserve-3d;
-}
-
-.scene-node {
-    position: relative;
-    width: 100%;
+.hero-void {
+    width: 100vw;
     height: 100vh;
-    transform-style: preserve-3d;
-    will-change: transform;
-}
-
-.front-layer, .mid-layer, .back-layer {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: relative;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    transform-style: preserve-3d;
+    justify-content: center;
+    perspective: 1000px;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+.wireframe-grid {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background-image: 
+        linear-gradient(rgba(157, 78, 221, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(157, 78, 221, 0.08) 1px, transparent 1px);
+    background-size: 60px 60px;
+    transform: perspective(500px) rotateX(60deg);
+    opacity: 0.3;
+}
+
+.purple-ambient-glow {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(157, 78, 221, 0.2) 0%, transparent 70%);
+    filter: blur(100px);
+    z-index: 1;
 }
