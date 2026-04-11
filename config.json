@@ -1,0 +1,22 @@
+{
+  "project": {
+    "name": "RP",
+    "version": "1.0.0",
+    "author": "Rio Pratama",
+    "theme": "Wildfire"
+  },
+  "about": {
+    "title": "RP",
+    "description": "Project RP "
+  },
+  "links": {
+    "instagram": "https://instagram.com/24yoyopr",
+    "email": "mailto:riokmxl@gmail.com"
+  },
+  "visual_settings": {
+    "primary_color": "#ff4500",
+    "secondary_color": "#ffffff",
+    "bg_color": "#050505",
+    "animation_speed": 1.5
+  }
+}
