@@ -1,3 +1,5 @@
+/* effects.js */
+
 class CursorEffects {
     constructor() {
         this.dot = document.getElementById('cursor-dot');
@@ -83,10 +85,23 @@ class TextAnimator {
             el.innerHTML = '';
             el.classList.add('split-text');
             
+            // PERBAIKAN: Memaksa kontainer teks menjadi flexbox yang bisa membungkus baris
+            el.style.display = 'flex';
+            el.style.flexWrap = 'wrap';
+            el.style.justifyContent = 'center';
+            
             content.split('').forEach((char, i) => {
                 const charSpan = document.createElement('span');
                 charSpan.className = 'char';
-                charSpan.innerHTML = char === ' ' ? '&nbsp;' : char;
+                
+                // PERBAIKAN: Membiarkan spasi normal agar browser bisa memutus baris
+                if (char === ' ') {
+                    charSpan.innerHTML = ' ';
+                    charSpan.style.whiteSpace = 'pre';
+                } else {
+                    charSpan.innerHTML = char;
+                }
+                
                 charSpan.style.transitionDelay = `${i * 0.03}s`;
                 el.appendChild(charSpan);
             });
