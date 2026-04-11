@@ -1,3 +1,5 @@
+/* responsive.css */
+
 @media screen and (max-width: 1024px) {
     :root {
         --text-massive: clamp(3rem, 8vw, 8rem);
@@ -12,10 +14,17 @@
 
 @media screen and (max-width: 768px) {
     :root {
-        --text-massive: clamp(2.5rem, 12vw, 4rem);
-        --text-display: clamp(1.5rem, 8vw, 2.5rem);
+        --text-massive: clamp(2rem, 10vw, 3rem);
+        --text-display: clamp(1.25rem, 8vw, 2rem);
         --spacing-unit: 0.5rem;
         --z-perspective: 800px;
+    }
+
+    h1, h2, h3, .title-primary, .title-secondary {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        line-height: 1.1;
     }
 
     .hero-container {
