@@ -1,0 +1,15 @@
+@media (max-width: 600px) {
+    .k-layer {
+        font-size: 3.5rem;
+    }
+    
+    .brand-container {
+        top: 5vh;
+        left: 5vw;
+    }
+    
+    .main-nav {
+        bottom: 3vh;
+        right: 5vw;
+    }
+}
