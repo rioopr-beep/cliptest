@@ -2,17 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ecosystem Development">
-    <title>Rio Pratama</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Rio Pratama - System Architecture & Ecosystem">
+    <title>RIO PRATAMA | ECOSYSTEM</title>
 
-    <link rel="stylesheet" href="base.css">
-    <link rel="stylesheet" href="typography.css">
-    <link rel="stylesheet" href="layout.css">
-    <link rel="stylesheet" href="components.css">
-    <link rel="stylesheet" href="effects.css">
-    <link rel="stylesheet" href="loader.css">
-    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="base.css?v=2">
+    <link rel="stylesheet" href="typography.css?v=2">
+    <link rel="stylesheet" href="layout.css?v=2">
+    <link rel="stylesheet" href="components.css?v=2">
+    <link rel="stylesheet" href="effects.css?v=2">
+    <link rel="stylesheet" href="responsive.css?v=2">
+
+    <style>
+        /* FORCE FIX UNTUK MOBILE */
+        @media screen and (max-width: 768px) {
+            :root {
+                --text-massive: 2.2rem !important;
+                --text-display: 1.2rem !important;
+            }
+            
+            .title-primary, .title-secondary {
+                font-size: var(--text-massive) !important;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                line-height: 1.1 !important;
+                width: 100% !important;
+                text-align: center !important;
+            }
+
+            .split-text span {
+                display: inline-block !important;
+                white-space: normal !important;
+            }
+
+            .hero-container {
+                padding: 0 20px !important;
+                overflow: hidden !important;
+            }
+        }
+    </style>
 </head>
 <body data-theme="dark-purple">
 
@@ -27,47 +56,41 @@
     <div class="cursor-dot" id="cursor-dot"></div>
     <div class="cursor-outline" id="cursor-outline"></div>
 
-    <main id="smooth-wrapper">
-        <div id="smooth-content" class="canvas-3d-space">
+    <nav id="main-nav">
+        <div class="nav-brand">
+            <a href="#" class="nav-item">RIO PRATAMA</a>
+        </div>
+        <div class="nav-links">
+            <a href="about.html" class="nav-item">SYSTEM</a>
+            <a href="https://github.com" class="nav-item">GITHUB</a>
+        </div>
+    </nav>
+
+    <div id="smooth-wrapper">
+        <div id="smooth-content">
             
-            <section id="hero-layer" class="scene-node" data-depth="1.5">
-                <div class="hero-container front-layer" data-transform-z="250">
-                    <h1 class="title-primary">Rio Pratama</h1>
-                    <h2 class="title-secondary" data-transform-z="150">Ecosystem Development</h2>
+            <section class="hero-void">
+                <div class="wireframe-grid"></div>
+                <div class="purple-ambient-glow"></div>
+                
+                <div class="hero-container">
+                    <h1 class="title-primary">RIO PRATAMA</h1>
+                    <h2 class="title-secondary">SYSTEM DEVELOPMENT</h2>
                     
-                    <div class="action-node" data-transform-z="200">
-                        <a href="#ecosystem-grid" class="magnetic-button">
-                            <span class="button-label">Explore Ecosystem</span>
-                        </a>
+                    <div class="action-node">
+                        <button class="magnetic-button" data-hover>
+                            <span class="button-label">EXPLORE ECOSYSTEM</span>
+                        </button>
                     </div>
                 </div>
-                
-                <div class="hero-void back-layer" data-transform-z="-500">
-                    <div class="wireframe-grid"></div>
-                    <div class="purple-ambient-glow"></div>
-                </div>
             </section>
-
-            <section id="ecosystem-grid" class="scene-node" data-depth="1.0">
-                <div class="visual-node mid-layer" data-transform-z="100">
-                    <div class="structure-block alpha"></div>
-                    <div class="structure-block beta"></div>
-                </div>
-            </section>
-
-            <footer id="terminus-layer" class="scene-node footer-node" data-depth="0.5">
-                <div class="footer-container front-layer" data-transform-z="300">
-                    <p class="copyright-label">2026 Rio Pratama</p>
-                </div>
-            </footer>
 
         </div>
-    </main>
+    </div>
 
-    <script src="loader.js"></script>
-    <script src="engine.js"></script>
-    <script src="effects.js"></script>
-    <script src="navigation.js"></script>
-    <script src="script.js"></script>
+    <script src="engine.js?v=2"></script>
+    <script src="effects.js?v=2"></script>
+    <script src="navigation.js?v=2"></script>
+    <script src="script.js?v=2"></script>
 </body>
 </html>
