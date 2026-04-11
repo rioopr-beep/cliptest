@@ -1,22 +1,39 @@
 {
-  "project": {
-    "name": "RP",
-    "version": "1.0.0",
-    "author": "Rio Pratama",
-    "theme": "Wildfire"
+  "site": {
+    "name": "Rio Pratama",
+    "title": "Ecosystem Development",
+    "description": "System Architecture & Ecosystem",
+    "domain": "riopratama.vercel.app",
+    "locale": "en_US",
+    "year": 2026
   },
-  "about": {
-    "title": "RP",
-    "description": "Project RP "
+  "developer": {
+    "identity": "Rio Pratama",
+    "role": "System Architect",
+    "focus": [
+      "Python Automation",
+      "JavaScript Architecture",
+      "Ecosystem Integration"
+    ]
   },
-  "links": {
-    "instagram": "https://instagram.com/24yoyopr",
-    "email": "mailto:riokmxl@gmail.com"
+  "engine": {
+    "physics": {
+      "perspective": 1200,
+      "scrollEase": 0.08,
+      "magneticStrength": 0.3
+    },
+    "rendering": {
+      "useWebGLFallback": false,
+      "enableNoiseFilter": true,
+      "enableCustomCursor": true
+    }
   },
-  "visual_settings": {
-    "primary_color": "#ff4500",
-    "secondary_color": "#ffffff",
-    "bg_color": "#050505",
-    "animation_speed": 1.5
+  "theme": {
+    "mode": "dark-purple",
+    "colors": {
+      "void": "#030305",
+      "neon": "#9d4edd",
+      "dim": "#240046"
+    }
   }
 }
