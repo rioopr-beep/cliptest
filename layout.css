@@ -1,0 +1,28 @@
+.brand-container {
+    position: fixed;
+    top: 10vh;
+    left: 5vw;
+    z-index: 100;
+}
+
+.main-nav {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+    z-index: 101;
+}
+
+.about-content {
+    padding: 15vh 10vw;
+    position: relative;
+    z-index: 2;
+}
+
+.contact-section {
+    padding: 0 10vw 10vh;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    z-index: 2;
+    position: relative;
+}
