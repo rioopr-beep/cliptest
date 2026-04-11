@@ -1,95 +1,73 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rio Pratama | Portfolio</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ecosystem Development">
+    <title>Rio Pratama</title>
+
     <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="typography.css">
     <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="components.css">
+    <link rel="stylesheet" href="effects.css">
     <link rel="stylesheet" href="loader.css">
     <link rel="stylesheet" href="responsive.css">
 </head>
-<body>
+<body data-theme="dark-purple">
 
-    <div id="loader" class="loader">
-        <span class="loader-text">LOADING</span>
-    </div>
+    <svg style="display: none;">
+        <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+            <feColorMatrix type="matrix" values="1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 0.05 0" />
+        </filter>
+    </svg>
+    <div class="noise-overlay"></div>
 
-    <header class="top-left-brand">
-        <span class="brand-name">RIO PRATAMA</span>
-    </header>
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
 
-    <nav class="bottom-nav">
-        <div class="menu-options" id="menuOptions">
-            <a href="https://instagram.com/username" target="_blank" class="circle-btn ig"><span>IG</span></a>
-            <a href="mailto:rio@example.com" class="circle-btn mail"><span>✉</span></a>
-            <a href="https://twitter.com/username" target="_blank" class="circle-btn twt"><span>TW</span></a>
+    <main id="smooth-wrapper">
+        <div id="smooth-content" class="canvas-3d-space">
+            
+            <section id="hero-layer" class="scene-node" data-depth="1.5">
+                <div class="hero-container front-layer" data-transform-z="250">
+                    <h1 class="title-primary">Rio Pratama</h1>
+                    <h2 class="title-secondary" data-transform-z="150">Ecosystem Development</h2>
+                    
+                    <div class="action-node" data-transform-z="200">
+                        <a href="#ecosystem-grid" class="magnetic-button">
+                            <span class="button-label">Explore Ecosystem</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="hero-void back-layer" data-transform-z="-500">
+                    <div class="wireframe-grid"></div>
+                    <div class="purple-ambient-glow"></div>
+                </div>
+            </section>
+
+            <section id="ecosystem-grid" class="scene-node" data-depth="1.0">
+                <div class="visual-node mid-layer" data-transform-z="100">
+                    <div class="structure-block alpha"></div>
+                    <div class="structure-block beta"></div>
+                </div>
+            </section>
+
+            <footer id="terminus-layer" class="scene-node footer-node" data-depth="0.5">
+                <div class="footer-container front-layer" data-transform-z="300">
+                    <p class="copyright-label">2026 Rio Pratama</p>
+                </div>
+            </footer>
+
         </div>
+    </main>
 
-        <div class="menu-trigger" onclick="toggleMenu()">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-    </nav>
-
-    <div class="horizontal-slider">
-        <section class="slide">
-            <div class="illustration-editor">
-                <div class="editor-block"></div>
-                <div class="code code-html">
-                    <header><h1>HTML</h1></header>
-                    <div class="code-content">
-                        <code><span class="c-p">&lt;div</span> <span class="c-o">class</span>=<span class="c-y">"rect"</span><span class="c-p">&gt;&lt;/div&gt;</span></code>
-                    </div>
-                </div>
-                <div class="code code-css">
-                    <header><h1>CSS</h1></header>
-                    <div class="code-content">
-                        <code>
-                            <span class="c-r">.rect</span> {<br>
-                            &nbsp;&nbsp;background: <span class="c-b">linear-gradient</span>(<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-o">-119deg</span>,<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-y">$gray</span> 0%,<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="c-y">$dark-gray</span> 100%<br>
-                            &nbsp;&nbsp;);
-                        </code>
-                    </div>
-                </div>
-                <div class="code code-js">
-                    <header><h1>JS</h1></header>
-                    <div class="code-content">
-                        <code>
-                            <span class="c-p">var</span> colors = [<span class="c-g">"#74B087"</span>];<br><br>
-                            <span class="c-c">// Do the thing</span><br>
-                            <span class="c-p">function</span> <span class="c-b">animate</span>() {}
-                        </code>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="slide">
-            <div class="text-content">
-                <h2 class="reveal-text">BEYOND</h2>
-                <h2 class="reveal-text">THE CODE</h2>
-                <p>Membangun solusi digital yang hidup melalui presisi algoritma.</p>
-            </div>
-        </section>
-
-        <section class="slide">
-            <div class="text-content">
-                <h2 class="reveal-text">LET'S</h2>
-                <h2 class="reveal-text">BUILD</h2>
-                <p>Mari eksekusi ide gila menjadi kenyataan digital.</p>
-            </div>
-        </section>
-    </div>
-
-    <div id="canvas"></div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="loader.js"></script>
+    <script src="engine.js"></script>
+    <script src="effects.js"></script>
+    <script src="navigation.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
