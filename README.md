@@ -1,1 +1,0 @@
-Dibuat oleh Rio Pratama.
